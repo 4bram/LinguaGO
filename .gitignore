@@ -7,6 +7,7 @@ README_MEJORAS.md
 README_SONIDOS_NUEVOS.md
 storage.rules
 firestore.rules
+supabase_recursos/
 
 # Miscellaneous
 *.class
