@@ -1,0 +1,619 @@
+﻿archivo_mp3,texto_que_debe_decir,unidad_id,unidad
+hello.mp3,Hello,unidad1,Introducción
+hi.mp3,Hi,unidad1,Introducción
+good_morning.mp3,Good morning,unidad1,Introducción
+good_afternoon.mp3,Good afternoon,unidad1,Introducción
+good_evening.mp3,Good evening,unidad1,Introducción
+goodbye.mp3,Goodbye,unidad1,Introducción
+see_you_later.mp3,See you later,unidad1,Introducción
+please.mp3,Please,unidad1,Introducción
+thank_you.mp3,Thank you,unidad1,Introducción
+you_are_welcome.mp3,You are welcome,unidad1,Introducción
+excuse_me.mp3,Excuse me,unidad1,Introducción
+sorry.mp3,Sorry,unidad1,Introducción
+name.mp3,Name,unidad1,Introducción
+surname.mp3,Surname,unidad1,Introducción
+nice_to_meet_you.mp3,Nice to meet you,unidad1,Introducción
+how_are_you.mp3,How are you?,unidad1,Introducción
+i_am_fine.mp3,I am fine,unidad1,Introducción
+teacher.mp3,Teacher,unidad2,Trabajo y escuela
+student.mp3,Student,unidad2,Trabajo y escuela
+doctor.mp3,Doctor,unidad2,Trabajo y escuela
+nurse.mp3,Nurse,unidad2,Trabajo y escuela
+engineer.mp3,Engineer,unidad2,Trabajo y escuela
+designer.mp3,Designer,unidad2,Trabajo y escuela
+waiter.mp3,Waiter,unidad2,Trabajo y escuela
+lawyer.mp3,Lawyer,unidad2,Trabajo y escuela
+police_officer.mp3,Police officer,unidad2,Trabajo y escuela
+firefighter.mp3,Firefighter,unidad2,Trabajo y escuela
+office.mp3,Office,unidad2,Trabajo y escuela
+school.mp3,School,unidad2,Trabajo y escuela
+university.mp3,University,unidad2,Trabajo y escuela
+classroom.mp3,Classroom,unidad2,Trabajo y escuela
+homework.mp3,Homework,unidad2,Trabajo y escuela
+exam.mp3,Exam,unidad2,Trabajo y escuela
+notebook.mp3,Notebook,unidad2,Trabajo y escuela
+pencil.mp3,Pencil,unidad2,Trabajo y escuela
+lesson.mp3,Lesson,unidad2,Trabajo y escuela
+meeting.mp3,Meeting,unidad2,Trabajo y escuela
+job.mp3,Job,unidad2,Trabajo y escuela
+salary.mp3,Salary,unidad2,Trabajo y escuela
+interview.mp3,Interview,unidad2,Trabajo y escuela
+water.mp3,Water,unidad3,Comida y bebidas
+bread.mp3,Bread,unidad3,Comida y bebidas
+apple.mp3,Apple,unidad3,Comida y bebidas
+banana.mp3,Banana,unidad3,Comida y bebidas
+orange.mp3,Orange,unidad3,Comida y bebidas
+strawberry.mp3,Strawberry,unidad3,Comida y bebidas
+grapes.mp3,Grapes,unidad3,Comida y bebidas
+carrot.mp3,Carrot,unidad3,Comida y bebidas
+potato.mp3,Potato,unidad3,Comida y bebidas
+tomato.mp3,Tomato,unidad3,Comida y bebidas
+rice.mp3,Rice,unidad3,Comida y bebidas
+beans.mp3,Beans,unidad3,Comida y bebidas
+chicken.mp3,Chicken,unidad3,Comida y bebidas
+beef.mp3,Beef,unidad3,Comida y bebidas
+fish.mp3,Fish,unidad3,Comida y bebidas
+egg.mp3,Egg,unidad3,Comida y bebidas
+cheese.mp3,Cheese,unidad3,Comida y bebidas
+milk.mp3,Milk,unidad3,Comida y bebidas
+coffee.mp3,Coffee,unidad3,Comida y bebidas
+tea.mp3,Tea,unidad3,Comida y bebidas
+breakfast.mp3,Breakfast,unidad3,Comida y bebidas
+lunch.mp3,Lunch,unidad3,Comida y bebidas
+dinner.mp3,Dinner,unidad3,Comida y bebidas
+menu.mp3,Menu,unidad3,Comida y bebidas
+bill.mp3,Bill,unidad3,Comida y bebidas
+delicious.mp3,Delicious,unidad3,Comida y bebidas
+street.mp3,Street,unidad4,Lugares y direcciones
+avenue.mp3,Avenue,unidad4,Lugares y direcciones
+corner.mp3,Corner,unidad4,Lugares y direcciones
+traffic_light.mp3,Traffic light,unidad4,Lugares y direcciones
+crosswalk.mp3,Crosswalk,unidad4,Lugares y direcciones
+bridge.mp3,Bridge,unidad4,Lugares y direcciones
+square.mp3,Square,unidad4,Lugares y direcciones
+park.mp3,Park,unidad4,Lugares y direcciones
+museum.mp3,Museum,unidad4,Lugares y direcciones
+hospital.mp3,Hospital,unidad4,Lugares y direcciones
+pharmacy.mp3,Pharmacy,unidad4,Lugares y direcciones
+bank.mp3,Bank,unidad4,Lugares y direcciones
+library.mp3,Library,unidad4,Lugares y direcciones
+post_office.mp3,Post office,unidad4,Lugares y direcciones
+bus_stop.mp3,Bus stop,unidad4,Lugares y direcciones
+train_station.mp3,Train station,unidad4,Lugares y direcciones
+airport.mp3,Airport,unidad4,Lugares y direcciones
+turn_left.mp3,Turn left,unidad4,Lugares y direcciones
+turn_right.mp3,Turn right,unidad4,Lugares y direcciones
+go_straight.mp3,Go straight,unidad4,Lugares y direcciones
+nearby.mp3,Nearby,unidad4,Lugares y direcciones
+far.mp3,Far,unidad4,Lugares y direcciones
+wake_up.mp3,Wake up,unidad5,Estilo de vida
+get_up.mp3,Get up,unidad5,Estilo de vida
+take_a_shower.mp3,Take a shower,unidad5,Estilo de vida
+get_dressed.mp3,Get dressed,unidad5,Estilo de vida
+have_breakfast.mp3,Have breakfast,unidad5,Estilo de vida
+go_to_work.mp3,Go to work,unidad5,Estilo de vida
+study.mp3,Study,unidad5,Estilo de vida
+have_lunch.mp3,Have lunch,unidad5,Estilo de vida
+come_home.mp3,Come home,unidad5,Estilo de vida
+cook.mp3,Cook,unidad5,Estilo de vida
+exercise.mp3,Exercise,unidad5,Estilo de vida
+relax.mp3,Relax,unidad5,Estilo de vida
+go_to_bed.mp3,Go to bed,unidad5,Estilo de vida
+always.mp3,Always,unidad5,Estilo de vida
+usually.mp3,Usually,unidad15,Gramática esencial
+often.mp3,Often,unidad5,Estilo de vida
+sometimes.mp3,Sometimes,unidad5,Estilo de vida
+rarely.mp3,Rarely,unidad5,Estilo de vida
+never.mp3,Never,unidad5,Estilo de vida
+early.mp3,Early,unidad5,Estilo de vida
+late.mp3,Late,unidad5,Estilo de vida
+at_noon.mp3,At noon,unidad5,Estilo de vida
+at_midnight.mp3,At midnight,unidad5,Estilo de vida
+hobby.mp3,Hobby,unidad5,Estilo de vida
+reading.mp3,Reading,unidad5,Estilo de vida
+drawing.mp3,Drawing,unidad5,Estilo de vida
+painting.mp3,Painting,unidad5,Estilo de vida
+singing.mp3,Singing,unidad5,Estilo de vida
+dancing.mp3,Dancing,unidad5,Estilo de vida
+swimming.mp3,Swimming,unidad5,Estilo de vida
+running.mp3,Running,unidad5,Estilo de vida
+cycling.mp3,Cycling,unidad5,Estilo de vida
+hiking.mp3,Hiking,unidad5,Estilo de vida
+photography.mp3,Photography,unidad5,Estilo de vida
+gardening.mp3,Gardening,unidad5,Estilo de vida
+gaming.mp3,Gaming,unidad5,Estilo de vida
+movie.mp3,Movie,unidad5,Estilo de vida
+concert.mp3,Concert,unidad5,Estilo de vida
+free_time.mp3,Free time,unidad5,Estilo de vida
+enjoy.mp3,Enjoy,unidad5,Estilo de vida
+prefer.mp3,Prefer,unidad5,Estilo de vida
+love.mp3,Love,unidad5,Estilo de vida
+hate.mp3,Hate,unidad5,Estilo de vida
+join_us.mp3,Join us,unidad5,Estilo de vida
+mother.mp3,Mother,unidad6,Personas y familia
+father.mp3,Father,unidad6,Personas y familia
+parents.mp3,Parents,unidad6,Personas y familia
+sister.mp3,Sister,unidad6,Personas y familia
+brother.mp3,Brother,unidad6,Personas y familia
+daughter.mp3,Daughter,unidad6,Personas y familia
+son.mp3,Son,unidad6,Personas y familia
+grandmother.mp3,Grandmother,unidad6,Personas y familia
+grandfather.mp3,Grandfather,unidad6,Personas y familia
+cousin.mp3,Cousin,unidad6,Personas y familia
+aunt.mp3,Aunt,unidad6,Personas y familia
+uncle.mp3,Uncle,unidad6,Personas y familia
+husband.mp3,Husband,unidad6,Personas y familia
+wife.mp3,Wife,unidad6,Personas y familia
+tall.mp3,Tall,unidad6,Personas y familia
+short.mp3,Short,unidad6,Personas y familia
+kind.mp3,Kind,unidad6,Personas y familia
+funny.mp3,Funny,unidad6,Personas y familia
+shy.mp3,Shy,unidad6,Personas y familia
+friendly.mp3,Friendly,unidad6,Personas y familia
+house.mp3,House,unidad7,Casa y vida diaria
+apartment.mp3,Apartment,unidad7,Casa y vida diaria
+bedroom.mp3,Bedroom,unidad7,Casa y vida diaria
+kitchen.mp3,Kitchen,unidad7,Casa y vida diaria
+bathroom.mp3,Bathroom,unidad7,Casa y vida diaria
+living_room.mp3,Living room,unidad7,Casa y vida diaria
+garden.mp3,Garden,unidad7,Casa y vida diaria
+door.mp3,Door,unidad7,Casa y vida diaria
+window.mp3,Window,unidad7,Casa y vida diaria
+table.mp3,Table,unidad7,Casa y vida diaria
+chair.mp3,Chair,unidad7,Casa y vida diaria
+bed.mp3,Bed,unidad7,Casa y vida diaria
+pillow.mp3,Pillow,unidad7,Casa y vida diaria
+blanket.mp3,Blanket,unidad7,Casa y vida diaria
+mirror.mp3,Mirror,unidad7,Casa y vida diaria
+lamp.mp3,Lamp,unidad7,Casa y vida diaria
+fridge.mp3,Fridge,unidad7,Casa y vida diaria
+shelf.mp3,Shelf,unidad7,Casa y vida diaria
+clean.mp3,Clean,unidad7,Casa y vida diaria
+sweep.mp3,Sweep,unidad7,Casa y vida diaria
+monday.mp3,Monday,unidad8,Tiempo y clima
+tuesday.mp3,Tuesday,unidad8,Tiempo y clima
+wednesday.mp3,Wednesday,unidad8,Tiempo y clima
+thursday.mp3,Thursday,unidad8,Tiempo y clima
+friday.mp3,Friday,unidad8,Tiempo y clima
+saturday.mp3,Saturday,unidad8,Tiempo y clima
+sunday.mp3,Sunday,unidad8,Tiempo y clima
+january.mp3,January,unidad8,Tiempo y clima
+february.mp3,February,unidad8,Tiempo y clima
+march.mp3,March,unidad8,Tiempo y clima
+april.mp3,April,unidad8,Tiempo y clima
+may.mp3,May,unidad8,Tiempo y clima
+june.mp3,June,unidad8,Tiempo y clima
+july.mp3,July,unidad8,Tiempo y clima
+august.mp3,August,unidad8,Tiempo y clima
+september.mp3,September,unidad8,Tiempo y clima
+october.mp3,October,unidad8,Tiempo y clima
+november.mp3,November,unidad8,Tiempo y clima
+december.mp3,December,unidad8,Tiempo y clima
+sunny.mp3,Sunny,unidad8,Tiempo y clima
+cloudy.mp3,Cloudy,unidad8,Tiempo y clima
+rainy.mp3,Rainy,unidad8,Tiempo y clima
+windy.mp3,Windy,unidad8,Tiempo y clima
+storm.mp3,Storm,unidad8,Tiempo y clima
+weather.mp3,Weather,unidad8,Tiempo y clima
+warm.mp3,Warm,unidad8,Tiempo y clima
+cold.mp3,Cold,unidad11,Salud y bienestar
+shop.mp3,Shop,unidad9,Compras y dinero
+store.mp3,Store,unidad9,Compras y dinero
+market.mp3,Market,unidad9,Compras y dinero
+price.mp3,Price,unidad9,Compras y dinero
+cheap.mp3,Cheap,unidad9,Compras y dinero
+expensive.mp3,Expensive,unidad9,Compras y dinero
+discount.mp3,Discount,unidad9,Compras y dinero
+receipt.mp3,Receipt,unidad9,Compras y dinero
+cash.mp3,Cash,unidad9,Compras y dinero
+credit_card.mp3,Credit card,unidad9,Compras y dinero
+wallet.mp3,Wallet,unidad9,Compras y dinero
+change.mp3,Change,unidad9,Compras y dinero
+size.mp3,Size,unidad9,Compras y dinero
+small.mp3,Small,unidad9,Compras y dinero
+medium.mp3,Medium,unidad9,Compras y dinero
+large.mp3,Large,unidad9,Compras y dinero
+try_on.mp3,Try on,unidad9,Compras y dinero
+fit.mp3,Fit,unidad9,Compras y dinero
+sale.mp3,Sale,unidad9,Compras y dinero
+refund.mp3,Refund,unidad9,Compras y dinero
+exchange.mp3,Exchange,unidad9,Compras y dinero
+how_much_is_it.mp3,How much is it?,unidad9,Compras y dinero
+trip.mp3,Trip,unidad10,Viajes y vacaciones
+travel.mp3,Travel,unidad10,Viajes y vacaciones
+ticket.mp3,Ticket,unidad10,Viajes y vacaciones
+passport.mp3,Passport,unidad10,Viajes y vacaciones
+visa.mp3,Visa,unidad10,Viajes y vacaciones
+luggage.mp3,Luggage,unidad10,Viajes y vacaciones
+suitcase.mp3,Suitcase,unidad10,Viajes y vacaciones
+boarding_pass.mp3,Boarding pass,unidad10,Viajes y vacaciones
+flight.mp3,Flight,unidad10,Viajes y vacaciones
+gate.mp3,Gate,unidad10,Viajes y vacaciones
+departure.mp3,Departure,unidad10,Viajes y vacaciones
+arrival.mp3,Arrival,unidad10,Viajes y vacaciones
+reservation.mp3,Reservation,unidad10,Viajes y vacaciones
+hotel.mp3,Hotel,unidad10,Viajes y vacaciones
+reception.mp3,Reception,unidad10,Viajes y vacaciones
+single_room.mp3,Single room,unidad10,Viajes y vacaciones
+double_room.mp3,Double room,unidad10,Viajes y vacaciones
+key.mp3,Key,unidad10,Viajes y vacaciones
+tour.mp3,Tour,unidad10,Viajes y vacaciones
+guide.mp3,Guide,unidad10,Viajes y vacaciones
+souvenir.mp3,Souvenir,unidad10,Viajes y vacaciones
+lost.mp3,Lost,unidad10,Viajes y vacaciones
+delayed.mp3,Delayed,unidad10,Viajes y vacaciones
+head.mp3,Head,unidad11,Salud y bienestar
+neck.mp3,Neck,unidad11,Salud y bienestar
+shoulder.mp3,Shoulder,unidad11,Salud y bienestar
+arm.mp3,Arm,unidad11,Salud y bienestar
+hand.mp3,Hand,unidad11,Salud y bienestar
+finger.mp3,Finger,unidad11,Salud y bienestar
+back.mp3,Back,unidad11,Salud y bienestar
+leg.mp3,Leg,unidad11,Salud y bienestar
+knee.mp3,Knee,unidad11,Salud y bienestar
+foot.mp3,Foot,unidad11,Salud y bienestar
+stomach.mp3,Stomach,unidad11,Salud y bienestar
+headache.mp3,Headache,unidad11,Salud y bienestar
+fever.mp3,Fever,unidad11,Salud y bienestar
+cough.mp3,Cough,unidad11,Salud y bienestar
+pain.mp3,Pain,unidad11,Salud y bienestar
+medicine.mp3,Medicine,unidad11,Salud y bienestar
+appointment.mp3,Appointment,unidad11,Salud y bienestar
+healthy.mp3,Healthy,unidad11,Salud y bienestar
+tired.mp3,Tired,unidad11,Salud y bienestar
+rest.mp3,Rest,unidad11,Salud y bienestar
+drink_water.mp3,Drink water,unidad11,Salud y bienestar
+computer.mp3,Computer,unidad12,Tecnología y comunicación
+laptop.mp3,Laptop,unidad12,Tecnología y comunicación
+keyboard.mp3,Keyboard,unidad12,Tecnología y comunicación
+screen.mp3,Screen,unidad12,Tecnología y comunicación
+mouse.mp3,Mouse,unidad12,Tecnología y comunicación
+headphones.mp3,Headphones,unidad12,Tecnología y comunicación
+charger.mp3,Charger,unidad12,Tecnología y comunicación
+battery.mp3,Battery,unidad12,Tecnología y comunicación
+password.mp3,Password,unidad12,Tecnología y comunicación
+username.mp3,Username,unidad12,Tecnología y comunicación
+website.mp3,Website,unidad12,Tecnología y comunicación
+download.mp3,Download,unidad12,Tecnología y comunicación
+upload.mp3,Upload,unidad12,Tecnología y comunicación
+update.mp3,Update,unidad12,Tecnología y comunicación
+file.mp3,File,unidad12,Tecnología y comunicación
+folder.mp3,Folder,unidad12,Tecnología y comunicación
+message.mp3,Message,unidad12,Tecnología y comunicación
+call.mp3,Call,unidad12,Tecnología y comunicación
+attachment.mp3,Attachment,unidad16,Inglés para el trabajo
+connection.mp3,Connection,unidad12,Tecnología y comunicación
+settings.mp3,Settings,unidad12,Tecnología y comunicación
+privacy.mp3,Privacy,unidad12,Tecnología y comunicación
+dog.mp3,Dog,unidad13,Naturaleza y animales
+cat.mp3,Cat,unidad13,Naturaleza y animales
+bird.mp3,Bird,unidad13,Naturaleza y animales
+horse.mp3,Horse,unidad13,Naturaleza y animales
+rabbit.mp3,Rabbit,unidad13,Naturaleza y animales
+cow.mp3,Cow,unidad13,Naturaleza y animales
+sheep.mp3,Sheep,unidad13,Naturaleza y animales
+fox.mp3,Fox,unidad13,Naturaleza y animales
+bear.mp3,Bear,unidad13,Naturaleza y animales
+wolf.mp3,Wolf,unidad13,Naturaleza y animales
+deer.mp3,Deer,unidad13,Naturaleza y animales
+eagle.mp3,Eagle,unidad13,Naturaleza y animales
+forest.mp3,Forest,unidad13,Naturaleza y animales
+mountain.mp3,Mountain,unidad13,Naturaleza y animales
+river.mp3,River,unidad13,Naturaleza y animales
+lake.mp3,Lake,unidad13,Naturaleza y animales
+ocean.mp3,Ocean,unidad13,Naturaleza y animales
+beach.mp3,Beach,unidad13,Naturaleza y animales
+tree.mp3,Tree,unidad13,Naturaleza y animales
+flower.mp3,Flower,unidad13,Naturaleza y animales
+environment.mp3,Environment,unidad13,Naturaleza y animales
+recycle.mp3,Recycle,unidad13,Naturaleza y animales
+pollution.mp3,Pollution,unidad13,Naturaleza y animales
+happy.mp3,Happy,unidad14,Emociones y opiniones
+sad.mp3,Sad,unidad14,Emociones y opiniones
+angry.mp3,Angry,unidad14,Emociones y opiniones
+worried.mp3,Worried,unidad14,Emociones y opiniones
+excited.mp3,Excited,unidad14,Emociones y opiniones
+nervous.mp3,Nervous,unidad14,Emociones y opiniones
+surprised.mp3,Surprised,unidad14,Emociones y opiniones
+bored.mp3,Bored,unidad14,Emociones y opiniones
+relaxed.mp3,Relaxed,unidad14,Emociones y opiniones
+proud.mp3,Proud,unidad14,Emociones y opiniones
+afraid.mp3,Afraid,unidad14,Emociones y opiniones
+confident.mp3,Confident,unidad14,Emociones y opiniones
+i_think.mp3,I think,unidad14,Emociones y opiniones
+i_believe.mp3,I believe,unidad14,Emociones y opiniones
+in_my_opinion.mp3,In my opinion,unidad14,Emociones y opiniones
+i_agree.mp3,I agree,unidad14,Emociones y opiniones
+i_disagree.mp3,I disagree,unidad14,Emociones y opiniones
+maybe.mp3,Maybe,unidad14,Emociones y opiniones
+probably.mp3,Probably,unidad14,Emociones y opiniones
+it_depends.mp3,It depends,unidad14,Emociones y opiniones
+right_now.mp3,Right now,unidad15,Gramática esencial
+yesterday.mp3,Yesterday,unidad15,Gramática esencial
+last_week.mp3,Last week,unidad15,Gramática esencial
+tomorrow.mp3,Tomorrow,unidad15,Gramática esencial
+next_month.mp3,Next month,unidad15,Gramática esencial
+already.mp3,Already,unidad15,Gramática esencial
+yet.mp3,Yet,unidad15,Gramática esencial
+before.mp3,Before,unidad15,Gramática esencial
+after.mp3,After,unidad15,Gramática esencial
+every_day.mp3,Every day,unidad15,Gramática esencial
+at_the_moment.mp3,At the moment,unidad15,Gramática esencial
+was.mp3,Was,unidad15,Gramática esencial
+were.mp3,Were,unidad15,Gramática esencial
+did.mp3,Did,unidad15,Gramática esencial
+does.mp3,Does,unidad15,Gramática esencial
+do.mp3,Do,unidad15,Gramática esencial
+will.mp3,Will,unidad15,Gramática esencial
+going_to.mp3,Going to,unidad15,Gramática esencial
+their.mp3,Their,unidad15,Gramática esencial
+our.mp3,Our,unidad15,Gramática esencial
+mine.mp3,Mine,unidad15,Gramática esencial
+deadline.mp3,Deadline,unidad16,Inglés para el trabajo
+schedule.mp3,Schedule,unidad16,Inglés para el trabajo
+task.mp3,Task,unidad16,Inglés para el trabajo
+project.mp3,Project,unidad16,Inglés para el trabajo
+team.mp3,Team,unidad16,Inglés para el trabajo
+colleague.mp3,Colleague,unidad16,Inglés para el trabajo
+manager.mp3,Manager,unidad16,Inglés para el trabajo
+client.mp3,Client,unidad16,Inglés para el trabajo
+customer.mp3,Customer,unidad16,Inglés para el trabajo
+feedback.mp3,Feedback,unidad16,Inglés para el trabajo
+report.mp3,Report,unidad16,Inglés para el trabajo
+invoice.mp3,Invoice,unidad16,Inglés para el trabajo
+email.mp3,Email,unidad16,Inglés para el trabajo
+forward.mp3,Forward,unidad16,Inglés para el trabajo
+reply.mp3,Reply,unidad16,Inglés para el trabajo
+available.mp3,Available,unidad16,Inglés para el trabajo
+busy.mp3,Busy,unidad16,Inglés para el trabajo
+meeting_room.mp3,Meeting room,unidad16,Inglés para el trabajo
+could_you.mp3,Could you...?,unidad16,Inglés para el trabajo
+please_find_attached.mp3,Please find attached,unidad16,Inglés para el trabajo
+actually.mp3,Actually,unidad17,Conversación intermedia
+by_the_way.mp3,By the way,unidad17,Conversación intermedia
+i_mean.mp3,I mean,unidad17,Conversación intermedia
+sounds_good.mp3,Sounds good,unidad17,Conversación intermedia
+no_worries.mp3,No worries,unidad17,Conversación intermedia
+that_makes_sense.mp3,That makes sense,unidad17,Conversación intermedia
+what_do_you_mean.mp3,What do you mean?,unidad17,Conversación intermedia
+let_me_think.mp3,Let me think,unidad17,Conversación intermedia
+as_far_as_i_know.mp3,As far as I know,unidad17,Conversación intermedia
+to_be_honest.mp3,To be honest,unidad17,Conversación intermedia
+it_turns_out.mp3,It turns out,unidad17,Conversación intermedia
+long_time_no_see.mp3,Long time no see,unidad17,Conversación intermedia
+how_come.mp3,How come?,unidad17,Conversación intermedia
+never_mind.mp3,Never mind,unidad17,Conversación intermedia
+hang_on.mp3,Hang on,unidad17,Conversación intermedia
+i_see.mp3,I see,unidad17,Conversación intermedia
+fair_enough.mp3,Fair enough,unidad17,Conversación intermedia
+definitely.mp3,Definitely,unidad17,Conversación intermedia
+could_i_have.mp3,Could I have...?,unidad18,Situaciones cotidianas
+i_would_like.mp3,I would like,unidad18,Situaciones cotidianas
+for_here.mp3,For here,unidad18,Situaciones cotidianas
+to_go.mp3,To go,unidad18,Situaciones cotidianas
+account.mp3,Account,unidad18,Situaciones cotidianas
+cash_machine.mp3,Cash machine,unidad18,Situaciones cotidianas
+withdraw.mp3,Withdraw,unidad18,Situaciones cotidianas
+deposit.mp3,Deposit,unidad18,Situaciones cotidianas
+prescription.mp3,Prescription,unidad18,Situaciones cotidianas
+dosage.mp3,Dosage,unidad18,Situaciones cotidianas
+allergic.mp3,Allergic,unidad18,Situaciones cotidianas
+help_me.mp3,Help me,unidad18,Situaciones cotidianas
+i_need_assistance.mp3,I need assistance,unidad18,Situaciones cotidianas
+it_is_broken.mp3,It is broken,unidad18,Situaciones cotidianas
+there_is_a_problem.mp3,There is a problem,unidad18,Situaciones cotidianas
+i_would_like_a_refund.mp3,I would like a refund,unidad18,Situaciones cotidianas
+emergency.mp3,Emergency,unidad18,Situaciones cotidianas
+fire_department.mp3,Fire department,unidad18,Situaciones cotidianas
+police_station.mp3,Police station,unidad18,Situaciones cotidianas
+find_out.mp3,Find out,unidad19,Inglés avanzado práctico
+give_up.mp3,Give up,unidad19,Inglés avanzado práctico
+look_after.mp3,Look after,unidad19,Inglés avanzado práctico
+carry_on.mp3,Carry on,unidad19,Inglés avanzado práctico
+put_off.mp3,Put off,unidad19,Inglés avanzado práctico
+run_out_of.mp3,Run out of,unidad19,Inglés avanzado práctico
+although.mp3,Although,unidad19,Inglés avanzado práctico
+however.mp3,However,unidad19,Inglés avanzado práctico
+therefore.mp3,Therefore,unidad19,Inglés avanzado práctico
+moreover.mp3,Moreover,unidad19,Inglés avanzado práctico
+unless.mp3,Unless,unidad19,Inglés avanzado práctico
+despite.mp3,Despite,unidad19,Inglés avanzado práctico
+on_the_other_hand.mp3,On the other hand,unidad19,Inglés avanzado práctico
+take_into_account.mp3,Take into account,unidad19,Inglés avanzado práctico
+as_a_result.mp3,As a result,unidad19,Inglés avanzado práctico
+in_the_long_run.mp3,In the long run,unidad19,Inglés avanzado práctico
+to_some_extent.mp3,To some extent,unidad19,Inglés avanzado práctico
+it_goes_without_saying.mp3,It goes without saying,unidad19,Inglés avanzado práctico
+zero.mp3,Zero,unidad20,"Números, fechas y medidas"
+one.mp3,One,unidad20,"Números, fechas y medidas"
+two.mp3,Two,unidad20,"Números, fechas y medidas"
+three.mp3,Three,unidad20,"Números, fechas y medidas"
+four.mp3,Four,unidad20,"Números, fechas y medidas"
+five.mp3,Five,unidad20,"Números, fechas y medidas"
+ten.mp3,Ten,unidad20,"Números, fechas y medidas"
+twenty.mp3,Twenty,unidad20,"Números, fechas y medidas"
+thirty.mp3,Thirty,unidad20,"Números, fechas y medidas"
+forty.mp3,Forty,unidad20,"Números, fechas y medidas"
+fifty.mp3,Fifty,unidad20,"Números, fechas y medidas"
+one_hundred.mp3,One hundred,unidad20,"Números, fechas y medidas"
+one_thousand.mp3,One thousand,unidad20,"Números, fechas y medidas"
+first.mp3,First,unidad20,"Números, fechas y medidas"
+second.mp3,Second,unidad20,"Números, fechas y medidas"
+third.mp3,Third,unidad20,"Números, fechas y medidas"
+fourth.mp3,Fourth,unidad20,"Números, fechas y medidas"
+birthday.mp3,Birthday,unidad20,"Números, fechas y medidas"
+date.mp3,Date,unidad20,"Números, fechas y medidas"
+year.mp3,Year,unidad20,"Números, fechas y medidas"
+month.mp3,Month,unidad20,"Números, fechas y medidas"
+week.mp3,Week,unidad20,"Números, fechas y medidas"
+hour.mp3,Hour,unidad20,"Números, fechas y medidas"
+minute.mp3,Minute,unidad20,"Números, fechas y medidas"
+half.mp3,Half,unidad20,"Números, fechas y medidas"
+quarter.mp3,Quarter,unidad20,"Números, fechas y medidas"
+kilometer.mp3,Kilometer,unidad20,"Números, fechas y medidas"
+meter.mp3,Meter,unidad20,"Números, fechas y medidas"
+liter.mp3,Liter,unidad20,"Números, fechas y medidas"
+kilo.mp3,Kilo,unidad20,"Números, fechas y medidas"
+how_many.mp3,How many?,unidad20,"Números, fechas y medidas"
+how_much.mp3,How much?,unidad20,"Números, fechas y medidas"
+letter.mp3,letter,contenido_extra,Contenido complementario · abecedario
+spell.mp3,spell,contenido_extra,Contenido complementario · abecedario
+alphabet.mp3,alphabet,contenido_extra,Contenido complementario · abecedario
+math.mp3,math,contenido_extra,Contenido complementario · materias
+science.mp3,science,contenido_extra,Contenido complementario · materias
+history.mp3,history,contenido_extra,Contenido complementario · materias
+english.mp3,English,contenido_extra,Contenido complementario · materias
+eraser.mp3,eraser,contenido_extra,Contenido complementario · utiles
+backpack.mp3,backpack,contenido_extra,Contenido complementario · utiles
+spring.mp3,spring,contenido_extra,Contenido complementario · estaciones
+summer.mp3,summer,contenido_extra,Contenido complementario · estaciones
+autumn.mp3,autumn,contenido_extra,Contenido complementario · estaciones
+winter.mp3,winter,contenido_extra,Contenido complementario · estaciones
+hot.mp3,hot,contenido_extra,Contenido complementario · temperaturas
+cool.mp3,cool,contenido_extra,Contenido complementario · temperaturas
+shirt.mp3,shirt,contenido_extra,Contenido complementario · ropa
+trousers.mp3,trousers,contenido_extra,Contenido complementario · ropa
+shoes.mp3,shoes,contenido_extra,Contenido complementario · ropa
+dress.mp3,dress,contenido_extra,Contenido complementario · ropa
+in.mp3,in,contenido_extra,Contenido complementario · preposiciones
+on.mp3,on,contenido_extra,Contenido complementario · preposiciones
+under.mp3,under,contenido_extra,Contenido complementario · preposiciones
+next_to.mp3,next to,contenido_extra,Contenido complementario · preposiciones
+half_past.mp3,half past,contenido_extra,Contenido complementario · horas
+quarter_past.mp3,quarter past,contenido_extra,Contenido complementario · horas
+leaf.mp3,leaf,contenido_extra,Contenido complementario · plantas
+grass.mp3,grass,contenido_extra,Contenido complementario · plantas
+browser.mp3,browser,contenido_extra,Contenido complementario · internet
+experience.mp3,experience,contenido_extra,Contenido complementario · entrevistas
+strength.mp3,strength,contenido_extra,Contenido complementario · entrevistas
+skill.mp3,skill,contenido_extra,Contenido complementario · entrevistas
+agenda.mp3,agenda,contenido_extra,Contenido complementario · reuniones
+attendee.mp3,attendee,contenido_extra,Contenido complementario · reuniones
+minutes.mp3,minutes,contenido_extra,Contenido complementario · reuniones
+subject.mp3,subject,contenido_extra,Contenido complementario · correos
+regards.mp3,regards,contenido_extra,Contenido complementario · correos
+help.mp3,help,contenido_extra,Contenido complementario · ayuda
+assistance.mp3,assistance,contenido_extra,Contenido complementario · ayuda
+safe.mp3,safe,contenido_extra,Contenido complementario · ayuda
+chop.mp3,chop,contenido_extra,Contenido complementario · cocinar
+boil.mp3,boil,contenido_extra,Contenido complementario · cocinar
+fry.mp3,fry,contenido_extra,Contenido complementario · cocinar
+bake.mp3,bake,contenido_extra,Contenido complementario · cocinar
+get_around.mp3,get around,contenido_extra,Contenido complementario · moverse
+weekend.mp3,weekend,contenido_extra,Contenido complementario · fin de semana
+hang_out.mp3,hang out,contenido_extra,Contenido complementario · fin de semana
+lifestyle.mp3,lifestyle,contenido_extra,Contenido complementario · estilo de vida
+habit.mp3,habit,contenido_extra,Contenido complementario · estilo de vida
+routine.mp3,routine,contenido_extra,Contenido complementario · estilo de vida
+curly_hair.mp3,curly hair,contenido_extra,Contenido complementario · describir
+friend.mp3,friend,contenido_extra,Contenido complementario · relaciones
+partner.mp3,partner,contenido_extra,Contenido complementario · relaciones
+relationship.mp3,relationship,contenido_extra,Contenido complementario · relaciones
+cozy.mp3,cozy,contenido_extra,Contenido complementario · hogar
+quiet.mp3,quiet,contenido_extra,Contenido complementario · hogar
+spacious.mp3,spacious,contenido_extra,Contenido complementario · hogar
+forecast.mp3,forecast,contenido_extra,Contenido complementario · pronostico
+temperature.mp3,temperature,contenido_extra,Contenido complementario · pronostico
+chance_of_rain.mp3,chance of rain,contenido_extra,Contenido complementario · pronostico
+debit_card.mp3,debit card,contenido_extra,Contenido complementario · formas de pago
+contactless.mp3,contactless,contenido_extra,Contenido complementario · formas de pago
+payment.mp3,payment,contenido_extra,Contenido complementario · formas de pago
+sleep.mp3,sleep,contenido_extra,Contenido complementario · descanso
+stretch.mp3,stretch,contenido_extra,Contenido complementario · descanso
+you_should.mp3,you should,contenido_extra,Contenido complementario · recomendaciones
+you_could.mp3,you could,contenido_extra,Contenido complementario · recomendaciones
+avoid.mp3,avoid,contenido_extra,Contenido complementario · recomendaciones
+reusable.mp3,reusable,contenido_extra,Contenido complementario · planeta
+waste.mp3,waste,contenido_extra,Contenido complementario · planeta
+save_energy.mp3,save energy,contenido_extra,Contenido complementario · planeta
+memory.mp3,memory,contenido_extra,Contenido complementario · experiencias
+moment.mp3,moment,contenido_extra,Contenido complementario · experiencias
+working.mp3,working,contenido_extra,Contenido complementario · presente continuo
+last_night.mp3,last night,contenido_extra,Contenido complementario · pasado simple
+next_week.mp3,next week,contenido_extra,Contenido complementario · futuro
+a.mp3,a,contenido_extra,Contenido complementario · articulos
+an.mp3,an,contenido_extra,Contenido complementario · articulos
+the.mp3,the,contenido_extra,Contenido complementario · articulos
+yours.mp3,yours,contenido_extra,Contenido complementario · pronombres
+theirs.mp3,theirs,contenido_extra,Contenido complementario · pronombres
+proposal.mp3,proposal,contenido_extra,Contenido complementario · negociacion
+offer.mp3,offer,contenido_extra,Contenido complementario · negociacion
+agreement.mp3,agreement,contenido_extra,Contenido complementario · negociacion
+how_is_it_going.mp3,how is it going?,contenido_extra,Contenido complementario · small talk
+nice_weather.mp3,nice weather,contenido_extra,Contenido complementario · small talk
+what_have_you_been_up_to.mp3,what have you been up to?,contenido_extra,Contenido complementario · small talk
+once_upon_a_time.mp3,once upon a time,contenido_extra,Contenido complementario · anecdotas
+at_first.mp3,at first,contenido_extra,Contenido complementario · anecdotas
+eventually.mp3,eventually,contenido_extra,Contenido complementario · anecdotas
+how_about.mp3,how about,contenido_extra,Contenido complementario · sugerencias
+why_dont_we.mp3,why dont we,contenido_extra,Contenido complementario · sugerencias
+lets.mp3,lets,contenido_extra,Contenido complementario · sugerencias
+i_beg_your_pardon.mp3,I beg your pardon,contenido_extra,Contenido complementario · malentendidos
+to_clarify.mp3,to clarify,contenido_extra,Contenido complementario · malentendidos
+misunderstanding.mp3,misunderstanding,contenido_extra,Contenido complementario · malentendidos
+may_i_speak_to.mp3,may I speak to,contenido_extra,Contenido complementario · telefonica
+hold_on.mp3,hold on,contenido_extra,Contenido complementario · telefonica
+bad_signal.mp3,bad signal,contenido_extra,Contenido complementario · telefonica
+ambulance.mp3,ambulance,contenido_extra,Contenido complementario · emergencias
+fire.mp3,fire,contenido_extra,Contenido complementario · emergencias
+police.mp3,police,contenido_extra,Contenido complementario · emergencias
+somewhat.mp3,somewhat,contenido_extra,Contenido complementario · matices
+rather.mp3,rather,contenido_extra,Contenido complementario · matices
+nevertheless.mp3,nevertheless,contenido_extra,Contenido complementario · matices
+evidence.mp3,evidence,contenido_extra,Contenido complementario · argumentar
+claim.mp3,claim,contenido_extra,Contenido complementario · argumentar
+point_of_view.mp3,point of view,contenido_extra,Contenido complementario · argumentar
+main_idea.mp3,main idea,contenido_extra,Contenido complementario · comprension
+detail.mp3,detail,contenido_extra,Contenido complementario · comprension
+context.mp3,context,contenido_extra,Contenido complementario · comprension
+add.mp3,add,contenido_extra,Contenido complementario · calculos
+subtract.mp3,subtract,contenido_extra,Contenido complementario · calculos
+multiply.mp3,multiply,contenido_extra,Contenido complementario · calculos
+divide.mp3,divide,contenido_extra,Contenido complementario · calculos
+how_old.mp3,how old,contenido_extra,Contenido complementario · numeros
+country.mp3,country,contenido_extra,Contenido complementario · paises
+nationality.mp3,nationality,contenido_extra,Contenido complementario · paises
+mexican.mp3,Mexican,contenido_extra,Contenido complementario · paises
+language.mp3,language,contenido_extra,Contenido complementario · paises
+wash_the_dishes.mp3,wash the dishes,contenido_extra,Contenido complementario · tareas domesticas
+do_the_laundry.mp3,do the laundry,contenido_extra,Contenido complementario · tareas domesticas
+stomachache.mp3,stomachache,contenido_extra,Contenido complementario · sintomas
+symptom.mp3,symptom,contenido_extra,Contenido complementario · medico
+crash.mp3,crash,contenido_extra,Contenido complementario · problemas tecnicos
+frozen.mp3,frozen,contenido_extra,Contenido complementario · problemas tecnicos
+restart.mp3,restart,contenido_extra,Contenido complementario · problemas tecnicos
+error_message.mp3,error message,contenido_extra,Contenido complementario · problemas tecnicos
+cheerful.mp3,cheerful,contenido_extra,Contenido complementario · animo
+upset.mp3,upset,contenido_extra,Contenido complementario · animo
+calm.mp3,calm,contenido_extra,Contenido complementario · animo
+lonely.mp3,lonely,contenido_extra,Contenido complementario · animo
+order.mp3,order,contenido_extra,Contenido complementario · restaurante
+tip.mp3,tip,contenido_extra,Contenido complementario · restaurante
+snack.mp3,snack,contenido_extra,Contenido complementario · comidas del dia
+meal.mp3,meal,contenido_extra,Contenido complementario · comidas del dia
+have_dinner.mp3,have dinner,contenido_extra,Contenido complementario · comidas del dia
+fruit.mp3,fruit,contenido_extra,Contenido complementario · frutas
+vegetable.mp3,vegetable,contenido_extra,Contenido complementario · frutas
+lettuce.mp3,lettuce,contenido_extra,Contenido complementario · frutas
+onion.mp3,onion,contenido_extra,Contenido complementario · frutas
+architect.mp3,architect,contenido_extra,Contenido complementario · profesiones
+chef.mp3,chef,contenido_extra,Contenido complementario · profesiones
+mechanic.mp3,mechanic,contenido_extra,Contenido complementario · profesiones
+accountant.mp3,accountant,contenido_extra,Contenido complementario · profesiones
+revise.mp3,revise,contenido_extra,Contenido complementario · estudio
+learn.mp3,learn,contenido_extra,Contenido complementario · estudio
+pass_an_exam.mp3,pass an exam,contenido_extra,Contenido complementario · estudio
+fail.mp3,fail,contenido_extra,Contenido complementario · estudio
+workplace.mp3,workplace,contenido_extra,Contenido complementario · trabajo
+department.mp3,department,contenido_extra,Contenido complementario · trabajo
+career.mp3,career,contenido_extra,Contenido complementario · trabajo
+juice.mp3,juice,contenido_extra,Contenido complementario · bebidas
+soda.mp3,soda,contenido_extra,Contenido complementario · bebidas
+hot_chocolate.mp3,hot chocolate,contenido_extra,Contenido complementario · bebidas
+lemonade.mp3,lemonade,contenido_extra,Contenido complementario · bebidas
+make_the_bed.mp3,make the bed,contenido_extra,Contenido complementario · tareas domesticas
+take_out_the_trash.mp3,take out the trash,contenido_extra,Contenido complementario · tareas domesticas
+balanced_diet.mp3,balanced diet,contenido_extra,Contenido complementario · habitos saludables
+sleep_well.mp3,sleep well,contenido_extra,Contenido complementario · habitos saludables
+take_a_break.mp3,take a break,contenido_extra,Contenido complementario · habitos saludables

@@ -1,0 +1,76 @@
+name: lingua_go
+description: "LinguaGo - App para aprender idiomas en línea (Proyecto final)"
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.9.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+
+  # Manejo de estado (obligatorio: Provider)
+  provider: ^6.1.2
+
+  # Firebase
+  firebase_core: ^4.15.0
+  firebase_auth: ^6.7.0
+  cloud_firestore: ^6.10.0
+  firebase_messaging: ^16.0.0
+
+  # Variables de entorno opcionales
+  flutter_dotenv: ^6.0.1
+
+  # Llamadas HTTP a la API de Stripe (modo prueba)
+  http: ^1.2.2
+  url_launcher: ^6.3.1
+
+  # Preferencias locales (tema y onboarding)
+  shared_preferences: ^2.5.3
+
+  # Tipografía personalizada
+  google_fonts: ^6.2.1
+
+  # Imágenes en caché (se ven sin internet después de la primera carga)
+  cached_network_image: ^3.4.1
+  image_picker: ^1.1.2
+
+  # Mapa nativo (no WebView) con OpenStreetMap
+  flutter_map: ^8.0.0
+  latlong2: ^0.9.1
+
+  # Sensor: acelerómetro
+  sensors_plus: ^6.0.0
+
+  # Voz del dispositivo para ejercicios de escucha (sin descargar audios).
+  flutter_tts: ^4.2.3
+  audioplayers: ^6.1.0
+
+  # Google Sign-In nativo (sin navegador)
+  google_sign_in: ^6.3.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.14.4
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon/logo.png"
+
+  adaptive_icon_background: "#7B35E8"
+  adaptive_icon_foreground: "assets/icon/logo.png"
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - .env
+    - assets/icon/
+    - assets/audios/
+    - assets/sonidos/
