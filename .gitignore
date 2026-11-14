@@ -8,7 +8,6 @@ README_SONIDOS_NUEVOS.md
 storage.rules
 firestore.rules
 
-
 # Miscellaneous
 *.class
 *.log
