@@ -1,5 +1,14 @@
 #INIT
 .env
+README_AUDIOS.md 
+README.md
+README_SEGURIDAD.md
+README_MEJORAS.md
+README_SONIDOS_NUEVOS.md
+storage.rules
+firestore.rules
+
+
 # Miscellaneous
 *.class
 *.log
