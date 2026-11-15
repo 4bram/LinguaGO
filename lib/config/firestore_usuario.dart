@@ -52,8 +52,6 @@ class FirestoreUsuario {
     }
   }
 
-  /// Los administradores solo se dan de alta desde la consola de Firebase:
-  /// colección "admins", documento con el uid del usuario.
   Future<bool> m_esAdmin(String uid) async {
     try {
       final doc = await conexion.collection('admins').doc(uid).get();

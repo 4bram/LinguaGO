@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
-/// Se traduce los menssjes de error de firebase a español.
+/// Se traduce los menssjes de error de firebase a español,para debuggear mas comodo.
 String traduceErrorAuth(FirebaseAuthException e) {
   switch (e.code) {
     case 'invalid-credential':
