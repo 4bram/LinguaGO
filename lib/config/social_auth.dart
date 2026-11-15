@@ -3,17 +3,12 @@ import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:lingua_go/config/email_auth.dart';
 
-/// Inicio de sesión con proveedores externos: Google y GitHub.
 class SocialAuth {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  /// ID de cliente WEB (client_type 3 de google-services.json).
-  /// Lo necesita Google para entregar el idToken que usa Firebase.
   static const String _webClientId =
       '365349118046-8konoecqvifu4ipel6s92p6ff1sbmtua.apps.googleusercontent.com';
 
-  /// Google en Android/iOS: ventana NATIVA de cuentas (no abre el navegador),
-  /// por eso no sufre el error "missing initial state".
   Future<String?> m_loginGoogle() async {
     try {
       if (kIsWeb) {
@@ -40,8 +35,6 @@ class SocialAuth {
     }
   }
 
-  /// GitHub no tiene ventana nativa: usa el navegador del teléfono.
-  /// Funciona bien cuando el navegador predeterminado es Chrome.
   Future<String?> m_loginGithub() async {
     final proveedor = GithubAuthProvider();
     proveedor.addScope('user:email');
@@ -61,7 +54,6 @@ class SocialAuth {
     }
   }
 
-  /// Cierra también la sesión de Google (para poder elegir otra cuenta).
   Future<void> m_cerrarGoogle() async {
     try {
       await GoogleSignIn().signOut();
