@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "365349118046",
+    "project_id": "linguago-itc-2026",
+    "storage_bucket": "linguago-itc-2026.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:365349118046:android:ec2361ad1ea01444a714cf",
+        "android_client_info": {
+          "package_name": "mx.edu.linguago.lingua_go"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "365349118046-aja6ssf9bnpa6mqasknhbm41rgqtosom.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "mx.edu.linguago.lingua_go",
+            "certificate_hash": "9401df1d0afe55249bdc669bb9ede69f058bf70a"
+          }
+        },
+        {
+          "client_id": "365349118046-8konoecqvifu4ipel6s92p6ff1sbmtua.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDqIMJ-e2WhC7km12grCQzy-s1X6NwUl_Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "365349118046-8konoecqvifu4ipel6s92p6ff1sbmtua.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
