@@ -10,8 +10,8 @@ import 'package:lingua_go/providers/suscripcion_provider.dart';
 import 'package:lingua_go/providers/unidades_provider.dart';
 import 'package:lingua_go/screens/mapa_screen.dart';
 import 'package:lingua_go/screens/perfil_screen.dart';
-//import 'package:lingua_go/screens/planes_screen.dart';
-//import 'package:lingua_go/screens/unidades_screen.dart';
+import 'package:lingua_go/screens/planes_screen.dart';
+import 'package:lingua_go/screens/unidades_screen.dart';
 import 'package:provider/provider.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -65,6 +65,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
     const paginas = <Widget>[
       MapaScreen(),
+      UnidadesScreen(),
+      PlanesScreen(),
       PerfilScreen(),
     ];
     final pagina = paginas[nav.indice];
