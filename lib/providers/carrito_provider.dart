@@ -12,7 +12,7 @@ class CarritoProvider extends ChangeNotifier {
   final Map<String, int> _cantidades = {};
   List<Map<String, dynamic>> pedidos = [];
   bool procesando = false;
-  String? categoriaFiltro; 
+  String? categoriaFiltro;
   String? _uid;
   StreamSubscription<List<Map<String, dynamic>>>? _sub;
 
@@ -68,7 +68,6 @@ class CarritoProvider extends ChangeNotifier {
   }
 
   void m_quita(String id) {
-    SonidosService.m_burbujaSuave();
     final c = cantidadDe(id);
     if (c <= 1) {
       _cantidades.remove(id);

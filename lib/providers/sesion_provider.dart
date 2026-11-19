@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -6,7 +7,6 @@ import 'package:lingua_go/config/email_auth.dart';
 import 'package:lingua_go/config/firestore_usuario.dart';
 import 'package:lingua_go/config/social_auth.dart';
 import 'package:lingua_go/config/storage_service.dart';
-
 
 class SesionProvider extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -21,17 +21,54 @@ class SesionProvider extends ChangeNotifier {
   bool esAdmin = false;
   String? _uidAdmin;
   bool cargando = false;
+  bool bienvenidaPendiente = false;
   bool subiendoFoto = false;
   StreamSubscription<User?>? _sub;
 
   SesionProvider() {
     usuario = _auth.currentUser;
     _cargaAdmin(usuario);
+    _cargaBienvenida(usuario);
     _sub = _auth.userChanges().listen((u) {
       usuario = u;
       notifyListeners();
       _cargaAdmin(u);
+      _cargaBienvenida(u);
     });
+  }
+
+  String? _bienvenidaVistaUid;
+
+  String _claveBienvenida(String uid) => 'bienvenida_pendiente_$uid';
+
+  Future<void> _cargaBienvenida(User? u) async {
+    if (u == null) {
+      if (bienvenidaPendiente) {
+        bienvenidaPendiente = false;
+        notifyListeners();
+      }
+      return;
+    }
+    if (u.uid == _bienvenidaVistaUid) return;
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final guardada = prefs.getBool(_claveBienvenida(u.uid)) ?? false;
+      if (guardada != bienvenidaPendiente && guardada) {
+        bienvenidaPendiente = true;
+        notifyListeners();
+      }
+    } catch (_) {}
+  }
+
+  Future<void> _marcaBienvenida() async {
+    bienvenidaPendiente = true;
+    notifyListeners();
+    final uid = _auth.currentUser?.uid;
+    if (uid == null) return;
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool(_claveBienvenida(uid), true);
+    } catch (_) {}
   }
 
   Future<void> _cargaAdmin(User? u) async {
@@ -67,6 +104,11 @@ class SesionProvider extends ChangeNotifier {
 
   String? get fotoUrl => usuario?.photoURL;
 
+  String get nombreCorto {
+    final partes = nombre.trim().split(RegExp(r'\s+'));
+    return partes.isEmpty ? '' : partes.first;
+  }
+
   String get correo => usuario?.email ?? '';
 
   String get nombre {
@@ -94,12 +136,41 @@ class SesionProvider extends ChangeNotifier {
   Future<String?> m_login(String correo, String pass) =>
       _ejecuta(() => _emailAuth.m_loginUser(user: correo, pass: pass));
 
-  Future<String?> m_registra(String nombre, String correo, String pass) =>
-      _ejecuta(() => _emailAuth.m_creaUsuario(nombre: nombre, user: correo, pass: pass));
+  Future<String?> m_registra(String nombre, String correo, String pass) async {
+    final error = await _ejecuta(
+        () => _emailAuth.m_creaUsuario(nombre: nombre, user: correo, pass: pass));
+    if (error == null) await _marcaBienvenida();
+    return error;
+  }
 
-  Future<String?> m_loginGoogle() => _ejecuta(_socialAuth.m_loginGoogle);
+  Future<String?> m_loginGoogle() => _conDeteccionNueva(_socialAuth.m_loginGoogle);
 
-  Future<String?> m_loginGithub() => _ejecuta(_socialAuth.m_loginGithub);
+  Future<String?> m_loginGithub() => _conDeteccionNueva(_socialAuth.m_loginGithub);
+
+  Future<String?> _conDeteccionNueva(Future<String?> Function() accion) async {
+    final error = await _ejecuta(accion);
+    if (error == null) {
+      final m = _auth.currentUser?.metadata;
+      final c = m?.creationTime;
+      final l = m?.lastSignInTime;
+      if (c != null && l != null && l.difference(c).inSeconds.abs() < 15) {
+        await _marcaBienvenida();
+      }
+    }
+    return error;
+  }
+
+  Future<void> m_bienvenidaHecha() async {
+    final uid = _auth.currentUser?.uid;
+    _bienvenidaVistaUid = uid;
+    bienvenidaPendiente = false;
+    notifyListeners();
+    if (uid == null) return;
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove(_claveBienvenida(uid));
+    } catch (_) {}
+  }
 
   Future<String?> m_reenviaVerificacion() =>
       _ejecuta(_emailAuth.m_reenviaVerificacion);
@@ -116,6 +187,7 @@ class SesionProvider extends ChangeNotifier {
   }
 
   Future<void> m_cerrarSesion() async {
+    bienvenidaPendiente = false;
     await _socialAuth.m_cerrarGoogle();
     await _auth.signOut();
   }

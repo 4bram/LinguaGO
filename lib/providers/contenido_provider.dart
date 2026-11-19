@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
-import 'package:lingua_go/config/sonidos_service.dart';
 import 'package:lingua_go/models/producto_model.dart';
 
 class ContenidoProvider extends ChangeNotifier {
@@ -18,7 +17,6 @@ class ContenidoProvider extends ChangeNotifier {
   bool m_estaVolteada(int s, int i) => _volteadas.contains(_clave(s, i));
 
   void m_voltea(int s, int i) {
-    SonidosService.m_burbujaSuave();
     final k = _clave(s, i);
     if (!_volteadas.remove(k)) _volteadas.add(k);
     notifyListeners();
