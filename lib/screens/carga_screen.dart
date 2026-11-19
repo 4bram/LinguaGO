@@ -17,7 +17,7 @@ class _PantallaCargaState extends State<PantallaCarga> {
   @override
   void initState() {
     super.initState();
-    SonidosService.m_inicio(); 
+    SonidosService.m_inicio();
   }
 
   @override

@@ -16,7 +16,7 @@ class ContenidoProductoScreen extends StatelessWidget {
     final messenger = ScaffoldMessenger.of(context);
     if (!storage.configurado) {
       messenger.showSnackBar(const SnackBar(
-        content: Text('Configura Supabase en el .env para descargar el archivo.'),
+        content: Text('El archivo no está disponible por ahora.'),
       ));
       return;
     }

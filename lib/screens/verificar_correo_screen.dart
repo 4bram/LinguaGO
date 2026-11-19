@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:lingua_go/components/botones_campos.dart';
 import 'package:lingua_go/components/encabezado_curvo.dart';
 import 'package:lingua_go/components/tarjeta_formulario.dart';
-import 'package:lingua_go/config/sonidos_service.dart';
 import 'package:lingua_go/providers/nav_provider.dart';
 import 'package:lingua_go/providers/sesion_provider.dart';
 import 'package:provider/provider.dart';
@@ -27,7 +26,6 @@ class VerificarCorreoScreen extends StatelessWidget {
   Future<void> _reenviar(BuildContext context) async {
     final error = await context.read<SesionProvider>().m_reenviaVerificacion();
     if (context.mounted) {
-      if (error == null) SonidosService.m_exito();
       _mensaje(context, error ?? 'Correo de verificación reenviado');
     }
   }

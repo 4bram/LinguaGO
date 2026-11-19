@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:lingua_go/components/encabezado_curvo.dart';
+import 'package:lingua_go/components/responsive.dart';
 import 'package:lingua_go/components/theme_app.dart';
 import 'package:lingua_go/models/sede_model.dart';
 import 'package:lingua_go/providers/mapa_provider.dart';
@@ -23,7 +24,7 @@ class MapaScreen extends StatelessWidget {
       create: (_) => MapaProvider(),
       child: Column(
         children: [
-          const EncabezadoCurvo(
+          if (!Responsivo.esBaja(context)) const EncabezadoCurvo(
             alto: 150,
             child: SafeArea(
               bottom: false,
@@ -99,7 +100,9 @@ class MapaScreen extends StatelessWidget {
                     ),
                   ),
                   Align(
-                    alignment: Alignment.bottomCenter,
+                    alignment: MediaQuery.sizeOf(context).width >= 900
+                        ? Alignment.bottomLeft
+                        : Alignment.bottomCenter,
                     child: Padding(
                       padding: const EdgeInsets.all(12),
                       child: ConstrainedBox(
@@ -125,7 +128,7 @@ class MapaScreen extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(height: 6),
-                            _tarjetaSede(context, m.sede),
+                            _tarjetaSede(context, m.sede, Responsivo.esBaja(context)),
                           ],
                         ),
                       ),
@@ -148,7 +151,7 @@ class MapaScreen extends StatelessWidget {
     );
   }
 
-  Widget _tarjetaSede(BuildContext context, SedeModel sede) {
+  Widget _tarjetaSede(BuildContext context, SedeModel sede, bool compacta) {
     final abierta = sede.m_abiertaAhora();
     return Card(
       elevation: 6,
@@ -169,9 +172,11 @@ class MapaScreen extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 4),
-            Text(sede.direccion, style: const TextStyle(fontSize: 12)),
-            Text(sede.horarioTexto, style: const TextStyle(fontSize: 12)),
+            if (!compacta) ...[
+              const SizedBox(height: 4),
+              Text(sede.direccion, style: const TextStyle(fontSize: 12)),
+              Text(sede.horarioTexto, style: const TextStyle(fontSize: 12)),
+            ],
             const SizedBox(height: 6),
             Row(
               children: [

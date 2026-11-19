@@ -1,3 +1,4 @@
+import 'package:lingua_go/config/cache_imagenes.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:lingua_go/components/aparece.dart';
@@ -455,6 +456,7 @@ class UnidadDetalleScreen extends StatelessWidget {
               child: InteractiveViewer(
                 child: CachedNetworkImage(
                   imageUrl: url,
+                  cacheManager: CacheImagenes.manager,
                   fit: BoxFit.contain,
                   placeholder: (_, __) => const Padding(
                     padding: EdgeInsets.all(40),

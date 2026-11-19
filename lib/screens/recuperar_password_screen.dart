@@ -3,7 +3,6 @@ import 'package:lingua_go/components/botones_campos.dart';
 import 'package:lingua_go/components/encabezado_curvo.dart';
 import 'package:lingua_go/components/tarjeta_formulario.dart';
 import 'package:lingua_go/components/validadores.dart';
-import 'package:lingua_go/config/sonidos_service.dart';
 import 'package:lingua_go/providers/sesion_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -37,7 +36,6 @@ class _RecuperarPasswordScreenState extends State<RecuperarPasswordScreen> {
       ),
     );
     if (error == null) {
-      SonidosService.m_exito();
       Navigator.pop(context);
     }
   }

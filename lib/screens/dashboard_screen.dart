@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lingua_go/components/responsive.dart';
 import 'package:lingua_go/components/theme_app.dart';
 import 'package:lingua_go/providers/carrito_provider.dart';
+import 'package:lingua_go/providers/conexion_provider.dart';
 import 'package:lingua_go/providers/nav_provider.dart';
 import 'package:lingua_go/providers/notificaciones_provider.dart';
 import 'package:lingua_go/providers/preferencias_provider.dart';
@@ -64,21 +65,38 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final nav = context.watch<NavProvider>();
 
     const paginas = <Widget>[
-      MapaScreen(),
       UnidadesScreen(),
+      MapaScreen(),
       PlanesScreen(),
       PerfilScreen(),
     ];
-    final pagina = paginas[nav.indice];
+    final online = context.watch<ConexionProvider>().enLinea;
+    final pagina = Column(
+      children: [
+        if (!online) const _AvisoSinConexion(),
+        Expanded(
+          child: online
+              ? paginas[nav.indice]
+              : MediaQuery.removePadding(
+                  context: context,
+                  removeTop: true,
+                  child: paginas[nav.indice],
+                ),
+        ),
+      ],
+    );
 
-    if (Responsivo.esEscritorio(context)) {
+    if (Responsivo.usaRiel(context)) {
+      final ancho = MediaQuery.sizeOf(context).width;
+      final extendido = ancho >= 1100;
       return Scaffold(
         body: Row(
           children: [
             NavigationRail(
               selectedIndex: nav.indice,
               onDestinationSelected: (i) => context.read<NavProvider>().m_cambia(i),
-              labelType: NavigationRailLabelType.all,
+              extended: extendido,
+              labelType: extendido ? NavigationRailLabelType.none : NavigationRailLabelType.all,
               destinations: const [
                 NavigationRailDestination(
                   icon: Icon(Icons.menu_book),
@@ -128,6 +146,37 @@ class _DashboardScreenState extends State<DashboardScreen> {
             NavigationDestination(icon: Icon(Icons.workspace_premium), label: 'Planes'),
             NavigationDestination(icon: Icon(Icons.person), label: 'Perfil'),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class _AvisoSinConexion extends StatelessWidget {
+  const _AvisoSinConexion();
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: const Color(0xFFB45309),
+      child: SafeArea(
+        bottom: false,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: const [
+              Icon(Icons.wifi_off, color: Colors.white, size: 16),
+              SizedBox(width: 8),
+              Flexible(
+                child: Text(
+                  'Sin conexión · mostrando datos guardados en el teléfono',
+                  style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w700),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
