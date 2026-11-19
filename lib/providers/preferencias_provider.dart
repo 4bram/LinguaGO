@@ -9,6 +9,7 @@ class PreferenciasProvider extends ChangeNotifier {
   ThemeMode modo = ThemeMode.light;
   bool onboardingVisto = false;
   bool cargado = false;
+  bool vistoAntesDeEntrar = false;
   bool sonidos = true;
   bool splashTerminado = false;
   int paginaOnboarding = 0;
@@ -59,7 +60,6 @@ class PreferenciasProvider extends ChangeNotifier {
     } catch (_) {}
   }
 
-
   void m_limpiaUsuario() {
     _uid = null;
     modo = ThemeMode.light;
@@ -93,6 +93,8 @@ class PreferenciasProvider extends ChangeNotifier {
     await _fs.m_guardaPreferencia(uid, 'sonidos', v);
   }
 
+  void m_gastaIntro() => vistoAntesDeEntrar = false;
+
   void m_terminaSplash() {
     splashTerminado = true;
     notifyListeners();
@@ -105,6 +107,7 @@ class PreferenciasProvider extends ChangeNotifier {
 
   Future<void> m_terminaOnboarding() async {
     onboardingVisto = true;
+    vistoAntesDeEntrar = true;
     notifyListeners();
     try {
       final prefs = await SharedPreferences.getInstance();

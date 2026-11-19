@@ -3,11 +3,9 @@ import 'package:lingua_go/components/botones_campos.dart';
 import 'package:lingua_go/components/encabezado_curvo.dart';
 import 'package:lingua_go/components/tarjeta_formulario.dart';
 import 'package:lingua_go/components/validadores.dart';
-import 'package:lingua_go/config/sonidos_service.dart';
 import 'package:lingua_go/providers/sesion_provider.dart';
 import 'package:provider/provider.dart';
 
-/// S eregisra un nuevo usuario. Se valida el correo y la contraseña y luego se manda el correo.
 class SignIn extends StatefulWidget {
   const SignIn({super.key});
 
@@ -50,7 +48,6 @@ class _SignInState extends State<SignIn> {
           duration: Duration(seconds: 4),
         ),
       );
-      SonidosService.m_exito();
       Navigator.popUntil(context, (ruta) => ruta.isFirst);
     }
   }

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:lingua_go/config/cache_imagenes.dart';
 import 'package:lingua_go/config/certificado_service.dart';
 import 'package:lingua_go/config/firestore_unidades.dart';
 import 'package:lingua_go/config/firestore_usuario.dart';
@@ -65,6 +66,7 @@ class UnidadesProvider extends ChangeNotifier {
       unidades = lista;
       cargando = false;
       notifyListeners();
+      _precargaImagenes(lista);
     }, onError: (e) {
       error = 'No se pudieron cargar las unidades: $e';
       cargando = false;
@@ -76,6 +78,15 @@ class UnidadesProvider extends ChangeNotifier {
       _progreso = mapa;
       notifyListeners();
     }, onError: (_) {});
+  }
+
+  final Set<String> _precargadas = {};
+
+  void _precargaImagenes(List<UnidadModel> lista) {
+    final nuevas = CacheImagenes.m_urls(unidades: lista)
+        .where((u) => _precargadas.add(u))
+        .toList();
+    if (nuevas.isNotEmpty) CacheImagenes.m_precarga(nuevas);
   }
 
   void m_detiene() {
@@ -199,7 +210,6 @@ class UnidadesProvider extends ChangeNotifier {
     acts['$cap'] = hechas.toList();
     doc['actividades'] = acts;
     notifyListeners();
-    SonidosService.m_exito();
     _guarda(u.id, {'actividades': {'$cap': hechas.toList()}});
   }
 
@@ -218,7 +228,7 @@ class UnidadesProvider extends ChangeNotifier {
     doc['evaluaciones'] = evals;
     _guarda(u.id, {'evaluaciones': {'$cap': datos}});
     if (porcentaje >= umbral) {
-      m_completaActividad(u, cap, 'evaluacion'); 
+      m_completaActividad(u, cap, 'evaluacion');
     } else {
       notifyListeners();
     }
@@ -244,7 +254,6 @@ class UnidadesProvider extends ChangeNotifier {
     _doc(u)['final'] = datos;
     notifyListeners();
     _guarda(u.id, {'final': datos});
-    if (aprueba) SonidosService.m_exito();
 
     final sinCertificado = '${datos['certificadoUrl'] ?? ''}'.isEmpty;
     if (aprueba && sinCertificado && _uid != null) {

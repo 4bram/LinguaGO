@@ -110,7 +110,6 @@ class _PracticaVistaState extends State<_PracticaVista> {
       await _audio.play(AssetSource('audios/$archivo'));
       return;
     } catch (_) {
-
     }
     try {
       if (!_vozLista) await _prepararVoz();

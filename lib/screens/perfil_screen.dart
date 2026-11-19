@@ -1,3 +1,4 @@
+import 'package:lingua_go/screens/onboarding_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:lingua_go/components/avatar_usuario.dart';
 import 'package:lingua_go/components/encabezado_curvo.dart';
@@ -87,7 +88,6 @@ class PerfilScreen extends StatelessWidget {
                         const Positioned.fill(
                           child: Center(child: CircularProgressIndicator()),
                         ),
-                      // Solo las cuentas de correo pueden editar la foto
                       if (sesion.esCorreo)
                         Positioned(
                           right: 0,
@@ -164,6 +164,16 @@ class PerfilScreen extends StatelessWidget {
                   title: const Text('Modo oscuro'),
                   value: pref.esOscuro,
                   onChanged: (v) => context.read<PreferenciasProvider>().m_cambiaTema(v),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.slideshow),
+                  title: const Text('Ver introducción'),
+                  subtitle: const Text('Vuelve a ver la guía de bienvenida'),
+                  trailing: const Icon(Icons.chevron_right),
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const OnboardingScreen(repetir: true)),
+                  ),
                 ),
                 SwitchListTile(
                   secondary: const Icon(Icons.volume_up),

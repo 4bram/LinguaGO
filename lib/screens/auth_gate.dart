@@ -21,9 +21,11 @@ class AuthGate extends StatelessWidget {
     if (!pref.cargado) {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
-    if (!pref.onboardingVisto) return const OnboardingScreen();
     if (sesion.usuario == null) return const LoginScreen();
     if (!sesion.correoVerificado) return const VerificarCorreoScreen();
+    if (sesion.bienvenidaPendiente) {
+      return OnboardingScreen(bienvenida: true, nombre: sesion.nombreCorto);
+    }
     return const DashboardScreen();
   }
 }

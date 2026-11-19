@@ -233,12 +233,10 @@ class _CarritoScreenState extends State<CarritoScreen> {
                         ),
                         const SizedBox(height: 10),
                         Text(
-                          carrito.modoSimulado
-                              ? 'Modo demostración: no se realiza ningún cargo real. '
-                                  'Para simular un rechazo, termina el número en 0002.'
-                              : 'Pago de prueba con Stripe: usa 4242 4242 4242 4242, '
-                                  'cualquier fecha futura y CVV. Para un rechazo usa 4000 0000 0000 0002. '
-                                  'No se realiza ningún cargo real.',
+                          'Tarjetas de ejemplo\n'
+                          'Tarjeta 1 (aprobada): 4242 4242 4242 4242\n'
+                          'Tarjeta 2 (rechazada): 4000 0000 0000 0002\n'
+                          'Fecha futura y CVV cualquiera.',
                           style: const TextStyle(fontSize: 11),
                           textAlign: TextAlign.center,
                         ),

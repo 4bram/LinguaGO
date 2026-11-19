@@ -1,4 +1,3 @@
-import 'package:lingua_go/config/sonidos_service.dart';
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
@@ -15,7 +14,7 @@ class FlashcardsProvider extends ChangeNotifier {
   int? capituloIndex;
 
   bool sensorDisponible = true;
-  double fuerza = 9.8; 
+  double fuerza = 9.8;
   StreamSubscription<AccelerometerEvent>? _sub;
   DateTime _ultimoSacudon = DateTime.fromMillisecondsSinceEpoch(0);
   static const double umbralSacudon = 20;
@@ -33,7 +32,6 @@ class FlashcardsProvider extends ChangeNotifier {
   }
 
   void m_voltea() {
-    SonidosService.m_burbujaSuave();
     volteada = !volteada;
     notifyListeners();
   }
