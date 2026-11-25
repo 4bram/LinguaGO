@@ -1,7 +1,5 @@
 import 'unidad_model.dart';
 
-/// Contenido pedagógico de un capítulo. Se construye a partir del tema del
-/// capítulo y de vocabulario de su propia unidad; nunca mezcla temas ajenos.
 class ContenidoCapitulo {
   final String titulo;
   final String objetivo;

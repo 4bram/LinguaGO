@@ -1,4 +1,3 @@
-import 'package:lingua_go/config/sonidos_service.dart';
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
@@ -6,8 +5,6 @@ import 'package:lingua_go/models/unidad_model.dart';
 import 'package:lingua_go/models/contenido_capitulos.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 
-/// Tarjetas de vocabulario + SENSOR (acelerómetro).
-/// Al agitar el teléfono se pasa a la siguiente tarjeta.
 class FlashcardsProvider extends ChangeNotifier {
   UnidadModel? unidad;
   List<Map<String, String>> palabras = [];
@@ -16,9 +13,8 @@ class FlashcardsProvider extends ChangeNotifier {
   bool terminada = false;
   int? capituloIndex;
 
-  // Sensor
   bool sensorDisponible = true;
-  double fuerza = 9.8; // magnitud de la aceleración (m/s²)
+  double fuerza = 9.8;
   StreamSubscription<AccelerometerEvent>? _sub;
   DateTime _ultimoSacudon = DateTime.fromMillisecondsSinceEpoch(0);
   static const double umbralSacudon = 20;
@@ -36,7 +32,6 @@ class FlashcardsProvider extends ChangeNotifier {
   }
 
   void m_voltea() {
-    SonidosService.m_burbujaSuave();
     volteada = !volteada;
     notifyListeners();
   }
@@ -72,7 +67,7 @@ class FlashcardsProvider extends ChangeNotifier {
           }
         },
         onError: (_) {
-          // Equipos sin acelerómetro (escritorio / web): se usa el botón.
+
           sensorDisponible = false;
           notifyListeners();
         },
@@ -83,7 +78,6 @@ class FlashcardsProvider extends ChangeNotifier {
     }
   }
 
-  /// No notifica: se llama desde dispose().
   void m_detieneSensor() {
     _sub?.cancel();
     _sub = null;

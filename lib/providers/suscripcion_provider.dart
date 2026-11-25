@@ -2,10 +2,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:lingua_go/config/firestore_usuario.dart';
 import 'package:lingua_go/config/pasarela_pago.dart';
-import 'package:lingua_go/config/sonidos_service.dart';
 import 'package:lingua_go/models/plan_model.dart';
 
-/// Suscripción del usuario y proceso de pago.
 class SuscripcionProvider extends ChangeNotifier {
   final FirestoreUsuario _fs = FirestoreUsuario();
   final PasarelaPago _pasarela = PasarelaPago();
@@ -63,7 +61,6 @@ class SuscripcionProvider extends ChangeNotifier {
       cvv: cvv,
     );
 
-    if (resultado.exito) SonidosService.m_celebra();
     if (resultado.exito && _uid != null) {
       final ahora = DateTime.now();
       final fin = DateTime(ahora.year, ahora.month + plan.meses, ahora.day);

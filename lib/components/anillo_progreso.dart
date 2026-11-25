@@ -1,8 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 
-/// WIDGET AVANZADO (innovación UI): anillo de progreso dibujado con
-/// CustomPaint / CustomPainter (el círculo con % del diseño).
 class AnilloProgreso extends StatelessWidget {
   final int porcentaje;
   final double tam;

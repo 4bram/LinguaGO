@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:lingua_go/components/botones_campos.dart';
-import 'package:lingua_go/components/encabezado_curvo.dart';
-import 'package:lingua_go/components/tarjeta_formulario.dart';
-import 'package:lingua_go/config/sonidos_service.dart';
+import 'package:lingua_go/components/pantalla_auth.dart';
 import 'package:lingua_go/providers/nav_provider.dart';
 import 'package:lingua_go/providers/sesion_provider.dart';
 import 'package:provider/provider.dart';
 
-/// Bloquea el acceso hasta que el correo esté confirmado.
 class VerificarCorreoScreen extends StatelessWidget {
   const VerificarCorreoScreen({super.key});
 
@@ -21,15 +17,14 @@ class VerificarCorreoScreen extends StatelessWidget {
     final sesion = context.read<SesionProvider>();
     await sesion.m_recargaUsuario();
     if (context.mounted && !sesion.correoVerificado) {
-      _mensaje(context, 'Aún no se ha confirmado el correo. Revisa tu bandeja y spam.');
+      _mensaje(context, 'Todavia no verificas tu correo');
     }
   }
 
   Future<void> _reenviar(BuildContext context) async {
     final error = await context.read<SesionProvider>().m_reenviaVerificacion();
     if (context.mounted) {
-      if (error == null) SonidosService.m_exito();
-      _mensaje(context, error ?? 'Correo de verificación reenviado');
+      _mensaje(context, error ?? 'Correo reenviado');
     }
   }
 
@@ -37,64 +32,42 @@ class VerificarCorreoScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final sesion = context.watch<SesionProvider>();
 
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            EncabezadoCurvo(
-              alto: 230,
-              child: const SafeArea(
-                child: Center(
-                  child: Icon(Icons.mark_email_unread, size: 90, color: Colors.white),
-                ),
-              ),
+    return PantallaAuth(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          TituloAuth(
+            'Verifica tu correo',
+            detalle: 'Te mandamos un correo a\n${sesion.correo}\nverificalo y presiona el boton',
+          ),
+          const SizedBox(height: 28),
+          BotonAuth(
+            texto: 'Ya verifique mi correo',
+            cargando: sesion.cargando,
+            onPressed: () => _yaVerifique(context),
+          ),
+          const SizedBox(height: 12),
+          BotonContornoAuth(
+            texto: sesion.puedeReenviar
+                ? 'Reenviar correo'
+                : 'Reenviar en ${sesion.segundosReenvio} s',
+            icono: const Icon(Icons.send, size: 18, color: Colors.white),
+            onPressed: (sesion.cargando || !sesion.puedeReenviar)
+                ? null
+                : () => _reenviar(context),
+          ),
+          const SizedBox(height: 10),
+          Center(
+            child: EnlaceAuth(
+              accion: 'Usar otra cuenta',
+              onTap: () {
+                context.read<NavProvider>().m_cambia(0);
+                context.read<SesionProvider>().m_cerrarSesion();
+              },
             ),
-            TarjetaFormulario(
-              child: Padding(
-                padding: EdgeInsets.zero,
-                child: Column(
-                  children: [
-                    const Text(
-                      'Verifica tu correo',
-                      style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800),
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      'Enviamos un enlace de confirmación a\n${sesion.correo}\n'
-                      'Ábrelo y después presiona el botón de abajo.',
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 24),
-                    BotonPrincipal(
-                      texto: 'YA VERIFIQUÉ MI CORREO',
-                      icono: Icons.check_circle,
-                      cargando: sesion.cargando,
-                      onPressed: () => _yaVerifique(context),
-                    ),
-                    const SizedBox(height: 10),
-                    OutlinedButton.icon(
-                      onPressed: sesion.cargando ? null : () => _reenviar(context),
-                      style: OutlinedButton.styleFrom(
-                        minimumSize: const Size.fromHeight(48),
-                        shape: const StadiumBorder(),
-                      ),
-                      icon: const Icon(Icons.send),
-                      label: const Text('Reenviar correo'),
-                    ),
-                    const SizedBox(height: 10),
-                    TextButton(
-                      onPressed: () {
-                        context.read<NavProvider>().m_cambia(0);
-                        context.read<SesionProvider>().m_cerrarSesion();
-                      },
-                      child: const Text('Usar otra cuenta'),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

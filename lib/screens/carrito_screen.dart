@@ -4,10 +4,10 @@ import 'package:lingua_go/components/botones_campos.dart';
 import 'package:lingua_go/components/responsive.dart';
 import 'package:lingua_go/components/theme_app.dart';
 import 'package:lingua_go/components/validadores.dart';
+import 'package:lingua_go/config/sonidos_service.dart';
 import 'package:lingua_go/providers/carrito_provider.dart';
 import 'package:provider/provider.dart';
 
-/// Carrito y pago nativo de la tienda (captura y validación de tarjeta).
 class CarritoScreen extends StatefulWidget {
   const CarritoScreen({super.key});
 
@@ -44,6 +44,7 @@ class _CarritoScreenState extends State<CarritoScreen> {
     if (!mounted) return;
 
     if (resultado.exito) {
+      SonidosService.m_compra();
       await showDialog(
         context: context,
         builder: (c) => AlertDialog(
@@ -54,7 +55,7 @@ class _CarritoScreenState extends State<CarritoScreen> {
               const Icon(Icons.check_circle, color: Colors.green, size: 64),
               const SizedBox(height: 12),
               Text(
-                'Tu pedido quedó registrado.\nFolio: ${resultado.idTransaccion}',
+                'Pedido listo.\nFolio: ${resultado.idTransaccion}',
                 textAlign: TextAlign.center,
               ),
             ],
@@ -98,7 +99,7 @@ class _CarritoScreenState extends State<CarritoScreen> {
                   children: [
                     const Icon(Icons.shopping_cart_outlined, size: 72, color: ThemeApp.lila),
                     const SizedBox(height: 12),
-                    const Text('Tu carrito está vacío', style: TextStyle(fontSize: 18)),
+                    const Text('Carrito vacio', style: TextStyle(fontSize: 18)),
                     const SizedBox(height: 16),
                     OutlinedButton(
                       onPressed: () => Navigator.pop(context),
@@ -171,7 +172,7 @@ class _CarritoScreenState extends State<CarritoScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'TOTAL (${carrito.totalArticulos} artículos)',
+                                'Total (${carrito.totalArticulos} articulos)',
                                 style: const TextStyle(
                                   color: Colors.white70,
                                   fontWeight: FontWeight.bold,
@@ -201,7 +202,7 @@ class _CarritoScreenState extends State<CarritoScreen> {
                           keyboardType: TextInputType.number,
                           inputFormatters: [FormatoTarjeta()],
                           validator: Validadores.tarjeta,
-                          decoration: decoracionCampo('Número de tarjeta', Icons.credit_card),
+                          decoration: decoracionCampo('Numero de tarjeta', Icons.credit_card),
                         ),
                         const SizedBox(height: 14),
                         Row(
@@ -234,18 +235,15 @@ class _CarritoScreenState extends State<CarritoScreen> {
                         ),
                         const SizedBox(height: 10),
                         Text(
-                          carrito.modoSimulado
-                              ? 'Modo demostración: no se realiza ningún cargo real. '
-                                  'Para simular un rechazo, termina el número en 0002.'
-                              : 'Pago de prueba con Stripe: usa 4242 4242 4242 4242, '
-                                  'cualquier fecha futura y CVV. Para un rechazo usa 4000 0000 0000 0002. '
-                                  'No se realiza ningún cargo real.',
+                          'Tarjetas de prueba\n'
+                          'Aprobada: 4242 4242 4242 4242\n'
+                          'Rechazada: 4000 0000 0000 0002',
                           style: const TextStyle(fontSize: 11),
                           textAlign: TextAlign.center,
                         ),
                         const SizedBox(height: 18),
                         BotonPrincipal(
-                          texto: 'PAGAR \$${carrito.total} MXN',
+                          texto: 'Pagar \$${carrito.total} MXN',
                           icono: Icons.lock,
                           cargando: carrito.procesando,
                           onPressed: _pagar,

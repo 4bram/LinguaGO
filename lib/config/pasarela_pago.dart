@@ -20,24 +20,9 @@ class _ErrorStripe implements Exception {
   const _ErrorStripe(this.mensaje);
 }
 
-/// Pasarela de pagos con Stripe (API REST, MODO PRUEBA).
-///
-/// Flujo: 1) se crea un PaymentMethod con los datos capturados en la pantalla
-/// nativa de pago y 2) se crea y confirma un PaymentIntent. El resultado
-/// ("succeeded") es el que activa la suscripción o registra el pedido.
-///
-/// La clave se lee de `.env` (`STRIPE_SECRET_KEY=sk_test_...`).
-/// ADVERTENCIA: una clave secreta dentro de una app móvil puede extraerse.
-/// Por eso SOLO se aceptan claves de prueba (`sk_test_`); una clave `sk_live_`
-/// se rechaza. En producción, el PaymentIntent debe crearlo un backend.
-///
-/// Sin clave configurada la app sigue funcionando en modo demostración local.
 class PasarelaPago {
   static const String _base = 'https://api.stripe.com/v1';
 
-  /// Tarjetas de prueba oficiales de Stripe -> token de método de pago de prueba.
-  /// Con estos tokens NO se envía el número de tarjeta a la API (por eso no
-  /// hace falta activar "Raw card data APIs" en el Dashboard).
   static const Map<String, String> _tarjetasPrueba = {
     '4242424242424242': 'pm_card_visa',
     '4000056655665556': 'pm_card_visa_debit',
@@ -63,7 +48,6 @@ class PasarelaPago {
   bool get _claveEnVivo =>
       _clave.startsWith('sk_live_') || _clave.startsWith('rk_live_');
 
-  /// true cuando no hay una clave de prueba válida (se simula el pago).
   bool get modoSimulado => !_clave.startsWith('sk_test_');
 
   Future<ResultadoPago> m_procesaPago({
@@ -79,15 +63,12 @@ class PasarelaPago {
     if (_claveEnVivo) {
       return const ResultadoPago(
         exito: false,
-        mensaje: 'Por seguridad solo se aceptan claves de prueba de Stripe '
-            '(sk_test_...). No se realizó ningún cargo.',
+        mensaje: 'Solo se aceptan claves de prueba (sk_test_). No se hizo ningún cargo.',
       );
     }
     if (modoSimulado) return _simula(numero);
 
     try {
-      // 1) Método de pago. Tarjeta de prueba conocida -> token de Stripe.
-      //    Otra tarjeta -> se intenta crear con los datos capturados.
       final token = _tarjetasPrueba[numero];
       final String metodoId;
       if (token != null) {
@@ -104,11 +85,10 @@ class PasarelaPago {
         metodoId = '${metodo['id']}';
       }
 
-      // 2) Pago (PaymentIntent confirmado de inmediato)
       final intento = await _post(
         'payment_intents',
         {
-          'amount': '${montoMxn * 100}', // centavos
+          'amount': '${montoMxn * 100}',
           'currency': 'mxn',
           'payment_method': metodoId,
           'confirm': 'true',
@@ -124,32 +104,32 @@ class PasarelaPago {
       if (estado == 'succeeded') {
         return ResultadoPago(
           exito: true,
-          mensaje: 'Pago aprobado por Stripe (modo prueba).',
+          mensaje: 'Pago aprobado',
           idTransaccion: '${intento['id']}',
         );
       }
       if (estado == 'requires_action') {
         return const ResultadoPago(
           exito: false,
-          mensaje: 'La tarjeta pide autenticación adicional (3D Secure). '
+          mensaje: 'La tarjeta pide autenticacion adicional (3D Secure). '
               'Usa otra tarjeta de prueba.',
         );
       }
       return ResultadoPago(
         exito: false,
-        mensaje: 'El pago no se completó (estado: $estado).',
+        mensaje: 'El pago no se completo (estado: $estado).',
       );
     } on _ErrorStripe catch (e) {
       return ResultadoPago(exito: false, mensaje: e.mensaje);
     } on TimeoutException {
       return const ResultadoPago(
         exito: false,
-        mensaje: 'Stripe tardó demasiado en responder. Intenta de nuevo.',
+        mensaje: 'Stripe tardo mucho, intenta otra vez',
       );
     } catch (_) {
       return const ResultadoPago(
         exito: false,
-        mensaje: 'No se pudo conectar con Stripe. Revisa tu conexión.',
+        mensaje: 'No se pudo conectar con Stripe, revisa tu internet',
       );
     }
   }
@@ -172,7 +152,7 @@ class PasarelaPago {
 
     final datos = jsonDecode(respuesta.body);
     if (datos is! Map<String, dynamic>) {
-      throw const _ErrorStripe('Respuesta inesperada de Stripe.');
+      throw const _ErrorStripe('Respuesta rara de Stripe');
     }
     if (respuesta.statusCode >= 400) {
       final error = datos['error'];
@@ -185,18 +165,18 @@ class PasarelaPago {
 
   String _traduce(Map<String, dynamic> error) {
     const mapa = <String, String>{
-      'card_declined': 'La tarjeta fue rechazada.',
-      'generic_decline': 'La tarjeta fue rechazada.',
-      'insufficient_funds': 'La tarjeta no tiene fondos suficientes.',
-      'lost_card': 'La tarjeta fue rechazada.',
-      'stolen_card': 'La tarjeta fue rechazada.',
-      'expired_card': 'La tarjeta está vencida.',
-      'incorrect_cvc': 'El código de seguridad (CVV) es incorrecto.',
-      'incorrect_number': 'El número de tarjeta es incorrecto.',
-      'invalid_number': 'El número de tarjeta es inválido.',
-      'invalid_expiry_month': 'El mes de vencimiento es inválido.',
-      'invalid_expiry_year': 'El año de vencimiento es inválido.',
-      'processing_error': 'Error al procesar la tarjeta. Intenta de nuevo.',
+      'card_declined': 'Tarjeta rechazada',
+      'generic_decline': 'Tarjeta rechazada',
+      'insufficient_funds': 'Tarjeta sin fondos',
+      'lost_card': 'Tarjeta rechazada',
+      'stolen_card': 'Tarjeta rechazada',
+      'expired_card': 'Tarjeta vencida',
+      'incorrect_cvc': 'CVV incorrecto',
+      'incorrect_number': 'Numero de tarjeta incorrecto',
+      'invalid_number': 'Numero de tarjeta invalido',
+      'invalid_expiry_month': 'Mes de vencimiento invalido',
+      'invalid_expiry_year': 'Ano de vencimiento invalido',
+      'processing_error': 'Error al procesar la tarjeta, intenta otra vez',
     };
     for (final campo in ['decline_code', 'code']) {
       final codigo = '${error[campo] ?? ''}';
@@ -204,24 +184,23 @@ class PasarelaPago {
     }
     final mensaje = '${error['message'] ?? 'Error desconocido de Stripe.'}';
     if (mensaje.toLowerCase().contains('raw card data')) {
-      return 'Stripe solo acepta aquí tarjetas de prueba oficiales. Usa '
+      return 'Stripe solo acepta aqui tarjetas de prueba oficiales. Usa '
           '4242 4242 4242 4242 (aprobada) o 4000 0000 0000 0002 (rechazada).';
     }
     return mensaje;
   }
 
-  /// Modo demostración local (cuando no hay clave de prueba en el .env).
   Future<ResultadoPago> _simula(String numero) async {
     await Future.delayed(const Duration(milliseconds: 900));
     if (numero.endsWith('0002')) {
       return const ResultadoPago(
         exito: false,
-        mensaje: 'Pago rechazado (simulación de prueba). No se realizó ningún cargo.',
+        mensaje: 'Pago rechazado (demo)',
       );
     }
     return ResultadoPago(
       exito: true,
-      mensaje: 'Pago aprobado en modo demostración. No se realizó ningún cargo real.',
+      mensaje: 'Pago aprobado (demo)',
       idTransaccion: 'demo_${DateTime.now().millisecondsSinceEpoch}',
     );
   }

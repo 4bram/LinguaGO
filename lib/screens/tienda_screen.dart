@@ -1,15 +1,14 @@
+import 'package:lingua_go/config/cache_imagenes.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:lingua_go/components/responsive.dart';
 import 'package:lingua_go/components/theme_app.dart';
-import 'package:lingua_go/config/sonidos_service.dart';
 import 'package:lingua_go/config/storage_service.dart';
 import 'package:lingua_go/models/producto_model.dart';
 import 'package:lingua_go/providers/carrito_provider.dart';
 import 'package:lingua_go/screens/contenido_producto_screen.dart';
 import 'package:provider/provider.dart';
 
-/// Tienda de productos (modelo de venta de productos).
 class TiendaScreen extends StatelessWidget {
   const TiendaScreen({super.key});
 
@@ -37,7 +36,7 @@ class TiendaScreen extends StatelessWidget {
           labelColor: Colors.white,
           unselectedLabelColor: Colors.white70,
           tabs: [
-            const Tab(icon: Icon(Icons.storefront), text: 'Catálogo'),
+            const Tab(icon: Icon(Icons.storefront), text: 'Catalogo'),
             Tab(icon: const Icon(Icons.library_books), text: 'Mi biblioteca (${carrito.biblioteca.length})'),
           ],
         ),
@@ -74,7 +73,7 @@ class TiendaScreen extends StatelessWidget {
 
   Widget _catalogo(BuildContext context, CarritoProvider carrito) {
     return ContenedorCentrado(
-      anchoMaximo: 600,
+      anchoMaximo: 1100,
       child: ListView(
         padding: const EdgeInsets.fromLTRB(16, 12, 16, 96),
         children: [
@@ -104,7 +103,7 @@ class TiendaScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 8),
-          for (final p in carrito.catalogoFiltrado) _tarjetaProducto(context, p, carrito),
+          _rejilla([for (final p in carrito.catalogoFiltrado) _tarjetaProducto(context, p, carrito)]),
           if (carrito.pedidos.isNotEmpty) ...[
             const SizedBox(height: 20),
             const Text(
@@ -126,18 +125,32 @@ class TiendaScreen extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.all(32),
           child: Text(
-            'Aún no tienes productos.\nLo que compres aparecerá aquí, listo para estudiar.',
+            'No has comprado nada',
             textAlign: TextAlign.center,
           ),
         ),
       );
     }
     return ContenedorCentrado(
-      anchoMaximo: 600,
+      anchoMaximo: 1100,
       child: ListView(
         padding: const EdgeInsets.all(16),
-        children: [for (final p in libros) _tarjetaBiblioteca(context, p)],
+        children: [_rejilla([for (final p in libros) _tarjetaBiblioteca(context, p)])],
       ),
+    );
+  }
+
+  Widget _rejilla(List<Widget> tarjetas) {
+    return LayoutBuilder(
+      builder: (context, c) {
+        const sep = 12.0;
+        final cols = Responsivo.columnas(c.maxWidth - 32, anchoMinimo: 340);
+        final w = (c.maxWidth - sep * (cols - 1)) / cols;
+        return Wrap(
+          spacing: sep,
+          children: [for (final t in tarjetas) SizedBox(width: w, child: t)],
+        );
+      },
     );
   }
 
@@ -151,6 +164,7 @@ class TiendaScreen extends StatelessWidget {
     if (!storage.configurado) return fallback;
     return CachedNetworkImage(
       imageUrl: storage.m_urlRecurso(p.rutaPortada),
+      cacheManager: CacheImagenes.manager,
       height: alto,
       width: double.infinity,
       fit: BoxFit.cover,
@@ -195,7 +209,6 @@ class TiendaScreen extends StatelessWidget {
   }
 
   void _abre(BuildContext context, ProductoModel p) {
-    SonidosService.m_portada();
     Navigator.push(
       context,
       MaterialPageRoute(builder: (_) => ContenidoProductoScreen(producto: p)),
@@ -253,7 +266,7 @@ class TiendaScreen extends StatelessWidget {
                   FilledButton.icon(
                     onPressed: () => _abre(context, p),
                     icon: const Icon(Icons.check_circle, size: 18),
-                    label: const Text('Comprado · Abrir'),
+                    label: const Text('Comprado · abrir'),
                   )
                 else if (cantidad == 0)
                   FilledButton.tonalIcon(
@@ -265,7 +278,7 @@ class TiendaScreen extends StatelessWidget {
                   OutlinedButton.icon(
                     onPressed: () => context.read<CarritoProvider>().m_quita(p.id),
                     icon: const Icon(Icons.remove_shopping_cart, size: 18),
-                    label: const Text('En el carrito · Quitar'),
+                    label: const Text('En el carrito · quitar'),
                   ),
               ],
             ),

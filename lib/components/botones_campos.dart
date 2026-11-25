@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lingua_go/components/theme_app.dart';
 
-/// Decoración común para los campos de texto.
 InputDecoration decoracionCampo(String etiqueta, IconData icono) {
   return InputDecoration(
     labelText: etiqueta,
@@ -10,7 +9,6 @@ InputDecoration decoracionCampo(String etiqueta, IconData icono) {
   );
 }
 
-/// Botón principal estilo "START" del diseño (píldora morada).
 class BotonPrincipal extends StatelessWidget {
   final String texto;
   final VoidCallback? onPressed;

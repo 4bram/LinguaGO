@@ -3,8 +3,6 @@ import 'package:lingua_go/config/sonidos_service.dart';
 import 'package:lingua_go/providers/preferencias_provider.dart';
 import 'package:provider/provider.dart';
 
-/// Envuelve toda la app: cada toque corto hace "tic" (sfx_toque).
-/// No suena mientras se muestra la pantalla de carga.
 class ToqueSonoro extends StatelessWidget {
   final Widget child;
 

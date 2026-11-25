@@ -7,18 +7,15 @@ import 'package:lingua_go/components/theme_app.dart';
 import 'package:lingua_go/models/unidad_model.dart';
 import 'package:lingua_go/models/contenido_capitulos.dart';
 import 'package:lingua_go/providers/practica_provider.dart';
-import 'package:lingua_go/providers/sesion_provider.dart';
 import 'package:lingua_go/providers/unidades_provider.dart';
 import 'package:provider/provider.dart';
 
-/// Actividades locales: escucha con voz del dispositivo, gramática,
-/// escritura y examen de vocabulario. No necesita una API externa.
 class PracticaScreen extends StatelessWidget {
   const PracticaScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Un estado nuevo por cada actividad (Provider, sin setState).
+
     return ChangeNotifierProvider(
       create: (_) => PracticaProvider(),
       child: const _PracticaVista(),
@@ -46,7 +43,6 @@ class _PracticaVistaState extends State<_PracticaVista> {
   UnidadModel? _unidad;
   bool _vozLista = false;
 
-  // El estado de la actividad vive en PracticaProvider.
   List<Map<String, String>> get _preguntas => _p.preguntas;
   int get _indice => _p.indice;
   int get _aciertos => _p.aciertos;
@@ -108,14 +104,14 @@ class _PracticaVistaState extends State<_PracticaVista> {
   Future<void> _hablar(String texto) async {
     final archivo = '${_nombreAudio(texto)}.mp3';
     try {
-      // Si el usuario agregó el MP3, se reproduce sin conexión.
+
       await rootBundle.load('assets/audios/$archivo');
       await _tts.stop();
       await _audio.stop();
       await _audio.play(AssetSource('audios/$archivo'));
       return;
     } catch (_) {
-      // Sin MP3 local: usar la voz inglesa instalada en el dispositivo.
+
     }
     try {
       if (!_vozLista) await _prepararVoz();
@@ -125,7 +121,7 @@ class _PracticaVistaState extends State<_PracticaVista> {
     } catch (_) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('No se encontró un MP3 y la voz del dispositivo no está disponible.')),
+          const SnackBar(content: Text('No se pudo reproducir el audio')),
         );
       }
     }
@@ -149,7 +145,7 @@ class _PracticaVistaState extends State<_PracticaVista> {
       final reglas = List<Map<String, String>>.from(_contenido!.gramatica)..shuffle(_random);
       preguntas = [...palabras, ...reglas.take(3)]..shuffle(_random);
     } else if (_tipo == 'evaluacion_unidad') {
-      // 12 preguntas tomadas de TODOS los capítulos: 8 de vocabulario y 4 de gramática.
+
       final vocabTodo = <String, Map<String, String>>{};
       final gramTodo = <Map<String, String>>[];
       for (int i = 0; i < unidad.capitulos.length; i++) {
@@ -216,7 +212,7 @@ class _PracticaVistaState extends State<_PracticaVista> {
 
   List<String> get _opcionesActuales {
     final p = _preguntas[_indice];
-    // La lista se conserva durante la pregunta para que no cambie al reconstruir.
+
     return _p.opcionesCache ??= _opciones(p);
   }
 
@@ -250,22 +246,14 @@ class _PracticaVistaState extends State<_PracticaVista> {
     final up = context.read<UnidadesProvider>();
     final unidad = _unidad!;
 
-    // Evaluación final de la unidad: se guarda siempre; con >= 70 % desbloquea
-    // la siguiente unidad y emite el certificado.
     if (_tipo == 'evaluacion_unidad') {
-      up.m_registraEvaluacionUnidad(
-        unidad,
-        porcentaje,
-        nombre: context.read<SesionProvider>().nombre,
-      );
+      up.m_registraEvaluacionUnidad(unidad, porcentaje);
       return;
     }
 
-    // Práctica libre (sin capítulo): no cuenta para el avance.
     final cap = _capituloIndex;
     if (cap == null) return;
 
-    // Evaluación del capítulo: se guarda siempre (intentos y mejor nota).
     if (_tipo == 'evaluacion') {
       up.m_registraEvaluacionCapitulo(unidad, cap, porcentaje);
       return;
@@ -320,16 +308,15 @@ class _PracticaVistaState extends State<_PracticaVista> {
       return Scaffold(appBar: AppBar(), body: const Center(child: Text('No hay contenido para esta actividad.')));
     }
 
-    // Candados: la evaluación se abre solo con el material completo.
     final up = context.watch<UnidadesProvider>();
     if (_tipo == 'evaluacion' && _capituloIndex != null &&
         !up.m_materialCompleto(_unidad!, _capituloIndex!)) {
-      return _bloqueo('Para presentar la evaluación del capítulo termina antes la lección, '
-          'las tarjetas, la escucha, la gramática y la escritura.');
+      return _bloqueo('Para presentar la evaluacion del capitulo termina antes la leccion, '
+          'las tarjetas, la escucha, la gramatica y la escritura.');
     }
     if (_tipo == 'evaluacion_unidad' && !up.m_capitulosCompletos(_unidad!)) {
-      return _bloqueo('La evaluación final se abre cuando completes todos los capítulos '
-          'de la unidad (material + evaluación del capítulo con 70 % o más).');
+      return _bloqueo('La evaluacion final se abre cuando completes todos los capitulos '
+          'de la unidad (material + evaluacion del capitulo con 70 % o mas).');
     }
 
     return Scaffold(
@@ -362,7 +349,7 @@ class _PracticaVistaState extends State<_PracticaVista> {
 
   Widget _leccion() {
     final c = _contenido;
-    if (c == null) return const Center(child: Text('No se encontró el contenido del capítulo.'));
+    if (c == null) return const Center(child: Text('Sin contenido'));
     return ListView(
       children: [
         Container(
@@ -372,13 +359,13 @@ class _PracticaVistaState extends State<_PracticaVista> {
             borderRadius: BorderRadius.circular(20),
           ),
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            const Text('OBJETIVO DEL CAPÍTULO', style: TextStyle(color: Colors.white70, fontSize: 11, letterSpacing: 1.1, fontWeight: FontWeight.bold)),
+            const Text('Objetivo del capitulo', style: TextStyle(color: Colors.white70, fontSize: 11, letterSpacing: 1.1, fontWeight: FontWeight.bold)),
             const SizedBox(height: 8),
             Text(c.objetivo, style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w700)),
           ]),
         ),
         const SizedBox(height: 18),
-        const Text('Explicación', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
+        const Text('Explicacion', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
         const SizedBox(height: 7),
         Text(c.explicacion, style: const TextStyle(height: 1.45)),
         const SizedBox(height: 20),
@@ -391,7 +378,7 @@ class _PracticaVistaState extends State<_PracticaVista> {
             title: Text(p['en'] ?? '', style: const TextStyle(fontWeight: FontWeight.w700)),
             subtitle: Text(p['es'] ?? ''),
             trailing: IconButton(
-              tooltip: 'Escuchar pronunciación',
+              tooltip: 'Escuchar pronunciacion',
               onPressed: () => _hablar(p['en'] ?? ''),
               icon: const Icon(Icons.volume_up, color: ThemeApp.morado),
             ),
@@ -412,9 +399,9 @@ class _PracticaVistaState extends State<_PracticaVista> {
         Wrap(spacing: 8, runSpacing: 8, children: [
           _accionLeccion('Vocabulario', Icons.style, 'quiz'),
           _accionLeccion('Escucha', Icons.headphones, 'escucha'),
-          _accionLeccion('Gramática', Icons.spellcheck, 'gramatica'),
+          _accionLeccion('Gramatica', Icons.spellcheck, 'gramatica'),
           _accionLeccion('Escritura', Icons.edit, 'escritura'),
-          _accionLeccion('Evaluación', Icons.quiz, 'evaluacion'),
+          _accionLeccion('Evaluacion', Icons.quiz, 'evaluacion'),
         ]),
         const SizedBox(height: 8),
         _botonCompletarLeccion(),
@@ -433,11 +420,11 @@ class _PracticaVistaState extends State<_PracticaVista> {
           : () {
               context.read<UnidadesProvider>().m_completaActividad(_unidad!, cap, 'leccion');
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('¡Lección completada!'), duration: Duration(seconds: 2)),
+                const SnackBar(content: Text('Leccion completada!'), duration: Duration(seconds: 2)),
               );
             },
       icon: Icon(hecha ? Icons.check_circle : Icons.task_alt),
-      label: Text(hecha ? 'Lección completada' : 'Marcar lección como completada'),
+      label: Text(hecha ? 'Leccion completada' : 'Marcar leccion como completada'),
     );
   }
 
@@ -498,11 +485,11 @@ class _PracticaVistaState extends State<_PracticaVista> {
         if (escucha) ...[
           const Icon(Icons.headphones, size: 54, color: ThemeApp.morado),
           const SizedBox(height: 10),
-          const Text('Escucha la palabra y selecciona su significado', textAlign: TextAlign.center),
+          const Text('Escucha y elige el significado', textAlign: TextAlign.center),
           const SizedBox(height: 14),
           Center(child: OutlinedButton.icon(onPressed: () => _hablar(p['en'] ?? ''), icon: const Icon(Icons.volume_up), label: const Text('Escuchar otra vez'))),
         ] else if (escritura) ...[
-          const Text('Escribe en inglés la palabra correspondiente:', textAlign: TextAlign.center),
+          const Text('Escribe la palabra en ingles:', textAlign: TextAlign.center),
           const SizedBox(height: 20),
           Text(p['es'] ?? '', textAlign: TextAlign.center, style: const TextStyle(fontSize: 32, fontWeight: FontWeight.w800)),
           const SizedBox(height: 20),
@@ -517,7 +504,7 @@ class _PracticaVistaState extends State<_PracticaVista> {
           const SizedBox(height: 12),
           if (!_respondida) ElevatedButton(onPressed: _comprobarEscritura, child: const Text('Comprobar respuesta')),
         ] else ...[
-          Text(gramatica ? 'Completa correctamente la oración:' : '¿Cómo se dice en inglés?', textAlign: TextAlign.center),
+          Text(gramatica ? 'Completa correctamente la oracion:' : 'Como se dice en ingles?', textAlign: TextAlign.center),
           const SizedBox(height: 22),
           Text(gramatica ? p['q']! : p['es']!, textAlign: TextAlign.center, style: const TextStyle(fontSize: 27, fontWeight: FontWeight.w800)),
         ],
@@ -561,32 +548,31 @@ class _PracticaVistaState extends State<_PracticaVista> {
 
   Widget _resultado() {
     final porcentaje = (_aciertos / _preguntas.length * 100).round();
-    final mensaje = porcentaje >= 90 ? '¡Excelente trabajo!' : porcentaje >= 70 ? '¡Vas muy bien!' : porcentaje >= 50 ? 'Buen intento, sigue practicando.' : 'Cada intento cuenta. ¡Inténtalo otra vez!';
+    final mensaje = porcentaje >= 90 ? 'Excelente trabajo!' : porcentaje >= 70 ? 'Vas muy bien!' : porcentaje >= 50 ? 'Buen intento, sigue practicando.' : 'Cada intento cuenta. Intentalo otra vez!';
     final up = context.watch<UnidadesProvider>();
     final aprobado = porcentaje >= UnidadesProvider.umbral;
     final String nota;
     Map<String, dynamic>? guardado;
     if (_tipo == 'evaluacion_unidad') {
       nota = aprobado
-          ? '¡Unidad aprobada! Se desbloqueó la siguiente unidad.'
-          : 'Necesitas 70 % para aprobar la unidad. Repasa los capítulos e inténtalo otra vez.';
+          ? 'Unidad aprobada! Se desbloqueo la siguiente unidad.'
+          : 'Necesitas 70 % para aprobar la unidad. Repasa los capitulos e intentalo otra vez.';
       guardado = up.m_evalUnidad(_unidad!);
     } else if (_tipo == 'evaluacion') {
       nota = aprobado
-          ? '¡Capítulo completado!'
+          ? 'Capitulo completado!'
           : 'Necesitas 70 % para completar el capítulo. Repasa el tema e inténtalo otra vez.';
       if (_capituloIndex != null) guardado = up.m_evalCapitulo(_unidad!, _capituloIndex!);
     } else if (_capituloIndex != null && _tipo != 'quiz') {
       nota = aprobado
-          ? 'Actividad registrada en el avance de tu capítulo.'
-          : 'Necesitas 70 % para registrar esta actividad en tu capítulo.';
+          ? 'Actividad registrada en el avance de tu capitulo.'
+          : 'Necesitas 70 % para registrar esta actividad en tu capitulo.';
     } else {
-      nota = 'Práctica libre: no cuenta para tu avance.';
+      nota = 'Practica libre: no cuenta para tu avance.';
     }
     final detalle = guardado == null
         ? ''
         : 'Mejor resultado: ${guardado['mejor']} % · Intentos: ${guardado['intentos']}';
-    final certUrl = '${up.m_evalUnidad(_unidad!)?['certificadoUrl'] ?? ''}';
     return LayoutBuilder(
       builder: (context, c) => SingleChildScrollView(
         child: ConstrainedBox(
@@ -603,27 +589,12 @@ class _PracticaVistaState extends State<_PracticaVista> {
         const SizedBox(height: 18),
         ClipRRect(borderRadius: BorderRadius.circular(20), child: LinearProgressIndicator(value: porcentaje / 100, minHeight: 12, color: ThemeApp.morado)),
         const SizedBox(height: 8),
-        Text('$porcentaje% de precisión', textAlign: TextAlign.center),
+        Text('$porcentaje% de precision', textAlign: TextAlign.center),
         const SizedBox(height: 6),
         Text(nota, textAlign: TextAlign.center, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
         if (detalle.isNotEmpty) ...[
           const SizedBox(height: 4),
           Text(detalle, textAlign: TextAlign.center, style: const TextStyle(fontSize: 12)),
-        ],
-        if (_tipo == 'evaluacion_unidad' && aprobado) ...[
-          const SizedBox(height: 10),
-          if (up.generandoCertificado)
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2)),
-                SizedBox(width: 10),
-                Text('Generando tu certificado…', style: TextStyle(fontSize: 12)),
-              ],
-            )
-          else if (certUrl.isNotEmpty)
-            const Text('🎓 Tu certificado está en Perfil → Mis certificados',
-                textAlign: TextAlign.center, style: TextStyle(fontSize: 12)),
         ],
         const SizedBox(height: 28),
         ElevatedButton(

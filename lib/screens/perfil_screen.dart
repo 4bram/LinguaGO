@@ -1,57 +1,18 @@
+import 'package:lingua_go/screens/onboarding_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:lingua_go/components/avatar_usuario.dart';
 import 'package:lingua_go/components/encabezado_curvo.dart';
 import 'package:lingua_go/components/responsive.dart';
 import 'package:lingua_go/providers/carrito_provider.dart';
+import 'package:lingua_go/providers/guia_provider.dart';
 import 'package:lingua_go/providers/nav_provider.dart';
 import 'package:lingua_go/providers/preferencias_provider.dart';
 import 'package:lingua_go/providers/sesion_provider.dart';
 import 'package:lingua_go/providers/suscripcion_provider.dart';
-import 'package:lingua_go/providers/unidades_provider.dart';
-import 'package:lingua_go/screens/unidad_detalle_screen.dart';
 import 'package:provider/provider.dart';
 
-/// Perfil: datos del usuario, foto, tema y cierre de sesión.
 class PerfilScreen extends StatelessWidget {
   const PerfilScreen({super.key});
-
-  void _verCertificados(BuildContext context) {
-    final lista = context.read<UnidadesProvider>().certificados;
-    showModalBottomSheet(
-      context: context,
-      showDragHandle: true,
-      builder: (c) => SafeArea(
-        child: lista.isEmpty
-            ? const Padding(
-                padding: EdgeInsets.all(32),
-                child: Text(
-                  'Aún no tienes certificados.\nAprueba la evaluación final de una unidad con 70 % o más.',
-                  textAlign: TextAlign.center,
-                ),
-              )
-            : ListView(
-                shrinkWrap: true,
-                children: [
-                  for (final cert in lista)
-                    ListTile(
-                      leading: const Icon(Icons.workspace_premium, color: Colors.amber),
-                      title: Text('Unidad ${cert.unidadNumero} · ${cert.unidadNombre}'),
-                      subtitle: Text('Mejor resultado: ${cert.porcentaje} %'),
-                      trailing: const Icon(Icons.visibility),
-                      onTap: () {
-                        Navigator.pop(c);
-                        UnidadDetalleScreen.verCertificado(
-                          context,
-                          cert.url,
-                          'Certificado · Unidad ${cert.unidadNumero}',
-                        );
-                      },
-                    ),
-                ],
-              ),
-      ),
-    );
-  }
 
   Future<void> _cambiarFoto(BuildContext context) async {
     final error = await context.read<SesionProvider>().m_cambiaFoto();
@@ -88,7 +49,7 @@ class PerfilScreen extends StatelessWidget {
                         const Positioned.fill(
                           child: Center(child: CircularProgressIndicator()),
                         ),
-                      // Solo las cuentas de correo pueden editar la foto
+
                       if (sesion.esCorreo)
                         Positioned(
                           right: 0,
@@ -140,22 +101,20 @@ class PerfilScreen extends StatelessWidget {
               children: [
                 ListTile(
                   leading: const Icon(Icons.login),
-                  title: const Text('Método de acceso'),
+                  title: const Text('Metodo de acceso'),
                   subtitle: Text(sesion.proveedor),
                 ),
                 if (!sesion.esCorreo)
                   const ListTile(
                     leading: Icon(Icons.info_outline),
                     title: Text('Foto de perfil'),
-                    subtitle: Text(
-                      'Se toma de tu proveedor. Solo las cuentas de correo pueden cambiarla.',
-                    ),
+                    subtitle: Text('No puedes editar esto'),
                   ),
                 ListTile(
                   leading: const Icon(Icons.workspace_premium),
-                  title: const Text('Suscripción'),
+                  title: const Text('Suscripcion'),
                   subtitle: Text(
-                    susc.activa ? 'Plan ${susc.nombrePlan}' : 'Sin suscripción activa',
+                    susc.activa ? 'Plan ${susc.nombrePlan}' : 'Sin suscripcion activa',
                   ),
                   trailing: const Icon(Icons.chevron_right),
                   onTap: () => context.read<NavProvider>().m_cambia(2),
@@ -166,39 +125,47 @@ class PerfilScreen extends StatelessWidget {
                   value: pref.esOscuro,
                   onChanged: (v) => context.read<PreferenciasProvider>().m_cambiaTema(v),
                 ),
+                ListTile(
+                  leading: const Icon(Icons.slideshow),
+                  title: const Text('Ver introduccion'),
+                  trailing: const Icon(Icons.chevron_right),
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const OnboardingScreen(repetir: true)),
+                  ),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.explore),
+                  title: const Text('Guia de la app'),
+                  trailing: const Icon(Icons.chevron_right),
+                  onTap: () {
+                    context.read<NavProvider>().m_cambia(0);
+                    context.read<GuiaProvider>().m_inicia();
+                  },
+                ),
                 SwitchListTile(
                   secondary: const Icon(Icons.volume_up),
-                  title: const Text('Sonidos de la app'),
-                  subtitle: const Text('Efectos al tocar, comprar y aprobar'),
+                  title: const Text('Sonido de clic'),
                   value: pref.sonidos,
                   onChanged: (v) => context.read<PreferenciasProvider>().m_cambiaSonidos(v),
                 ),
                 ListTile(
-                  leading: const Icon(Icons.card_membership),
-                  title: const Text('Mis certificados'),
-                  subtitle: Text(
-                    '${context.watch<UnidadesProvider>().certificados.length} obtenidos · guardados en la nube',
-                  ),
-                  trailing: const Icon(Icons.chevron_right),
-                  onTap: () => _verCertificados(context),
-                ),
-                ListTile(
                   leading: const Icon(Icons.storefront),
                   title: const Text('Tienda'),
-                  subtitle: Text('Mi biblioteca: ${context.watch<CarritoProvider>().biblioteca.length} productos'),
+                  subtitle: Text('${context.watch<CarritoProvider>().biblioteca.length} comprados'),
                   trailing: const Icon(Icons.chevron_right),
                   onTap: () => Navigator.pushNamed(context, '/tienda'),
                 ),
                 ListTile(
                   leading: const Icon(Icons.notifications),
                   title: const Text('Notificaciones'),
-                  subtitle: const Text('Temas de interés e historial'),
+                  subtitle: const Text('Temas e historial'),
                   trailing: const Icon(Icons.chevron_right),
                   onTap: () => Navigator.pushNamed(context, '/notificaciones'),
                 ),
                 ListTile(
                   leading: const Icon(Icons.logout),
-                  title: const Text('Cerrar sesión'),
+                  title: const Text('Cerrar sesion'),
                   subtitle: const Text('Salir'),
                   trailing: const Icon(Icons.chevron_right),
                   onTap: () {

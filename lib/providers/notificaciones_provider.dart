@@ -1,20 +1,15 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:lingua_go/config/firestore_usuario.dart';
 import 'package:lingua_go/config/notificaciones_service.dart';
 import 'package:lingua_go/models/notificacion_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-/// Historial de notificaciones y suscripción a temas (FCM Topics).
-///
-/// Los temas elegidos son POR USUARIO: se guardan en el dispositivo con el uid
-/// y en Firestore (usuarios/{uid}/preferencias/temas). Al iniciar sesión se
-/// suscribe SOLO a los temas de esa cuenta; al cerrar sesión se desuscribe de
-/// todos, así no se mezclan entre cuentas del mismo teléfono.
 class NotificacionesProvider extends ChangeNotifier {
   final NotificacionesService _servicio = NotificacionesService();
   final FirestoreUsuario _fs = FirestoreUsuario();
 
-  /// tema -> nombre visible
   static const Map<String, String> temasDisponibles = {
     'general': 'Avisos generales',
     'ofertas': 'Ofertas y promociones',
@@ -25,21 +20,28 @@ class NotificacionesProvider extends ChangeNotifier {
   final List<NotificacionModel> historial = [];
   final Set<String> temasActivos = {};
   String? token;
+  String permiso = 'comprobando…';
   String? _uid;
 
   bool get soportado => NotificacionesService.soportado;
 
-  /// Arranca el listener global (permisos, token y mensajes). Los temas se
-  /// aplican después, cuando hay un usuario con sesión (m_cargaUsuario).
   Future<void> m_inicializa() async {
     await _servicio.m_inicializa(provider: this);
+    m_actualizaPermiso();
   }
 
-  /// Al iniciar sesión: carga y aplica los temas de ESTE usuario.
+  Future<void> m_actualizaPermiso() async {
+    permiso = await _servicio.m_leePermiso();
+    notifyListeners();
+  }
+
+  int m_cuenta(String estado) => historial.where((n) => n.estado == estado).length;
+
   Future<void> m_cargaUsuario(String uid) async {
     _uid = uid;
+    await _cargaHistorial(uid);
+    m_actualizaPermiso();
 
-    // 1) Local (rápido). Un usuario nuevo empieza con el tema "general".
     List<String> temas = ['general'];
     try {
       final prefs = await SharedPreferences.getInstance();
@@ -49,7 +51,6 @@ class NotificacionesProvider extends ChangeNotifier {
     _aplica(temas);
     await _sincronizaSuscripciones();
 
-    // 2) Nube (por si cambió de dispositivo)
     final remoto = await _fs.m_leePreferencias(uid);
     if (_uid != uid || remoto == null) return;
     final lista = remoto['temas'];
@@ -63,8 +64,6 @@ class NotificacionesProvider extends ChangeNotifier {
     }
   }
 
-  /// Al cerrar sesión: se desuscribe de todo y borra lo de esta cuenta.
-  /// (Se llama mientras el árbol se destruye: se notifica después del frame.)
   void m_limpiaUsuario() {
     _uid = null;
     temasActivos.clear();
@@ -84,7 +83,6 @@ class NotificacionesProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Suscribe a los temas activos y desuscribe de los demás.
   Future<void> _sincronizaSuscripciones() async {
     for (final tema in temasDisponibles.keys) {
       try {
@@ -113,7 +111,7 @@ class NotificacionesProvider extends ChangeNotifier {
         final prefs = await SharedPreferences.getInstance();
         await prefs.setStringList('temas_$uid', temasActivos.toList());
       } catch (_) {}
-      // Sin await: si no hay internet no debe bloquear (se sincroniza solo)
+
       _fs.m_guardaPreferencia(uid, 'temas', temasActivos.toList());
     }
 
@@ -129,12 +127,60 @@ class NotificacionesProvider extends ChangeNotifier {
   }
 
   void m_agrega(NotificacionModel n) {
+
+    if (n.id.isNotEmpty && historial.any((x) => x.id == n.id)) return;
     historial.insert(0, n);
+    if (historial.length > 100) historial.removeRange(100, historial.length);
     notifyListeners();
+    _guardaHistorial();
+  }
+
+  Future<void> m_borraHistorial() async {
+    historial.clear();
+    notifyListeners();
+    _guardaHistorial();
+  }
+
+  Future<void> _cargaHistorial(String uid) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final crudo = prefs.getString('historial_notif_$uid');
+      if (crudo == null) {
+        _guardaHistorial();
+        return;
+      }
+      final guardadas = (jsonDecode(crudo) as List)
+          .whereType<Map>()
+          .map((e) => NotificacionModel.fromMap(Map<String, dynamic>.from(e)))
+          .toList();
+      for (final g in guardadas) {
+        final repetida = g.id.isNotEmpty && historial.any((x) => x.id == g.id);
+        if (!repetida) historial.add(g);
+      }
+      historial.sort((a, b) => b.fecha.compareTo(a.fecha));
+      notifyListeners();
+      _guardaHistorial();
+    } catch (e) {
+      debugPrint('Historial FCM: $e');
+    }
+  }
+
+  Future<void> _guardaHistorial() async {
+    final uid = _uid;
+    if (uid == null) return;
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString(
+        'historial_notif_$uid',
+        jsonEncode(historial.map((n) => n.toMap()).toList()),
+      );
+    } catch (_) {}
   }
 
   void m_guardaToken(String? nuevo) {
     token = nuevo;
+
+    debugPrint('FCM token: $nuevo');
     notifyListeners();
   }
 }

@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:lingua_go/components/aparece.dart';
 import 'package:lingua_go/components/encabezado_curvo.dart';
 import 'package:lingua_go/components/theme_app.dart';
 import 'package:lingua_go/models/plan_model.dart';
 import 'package:lingua_go/providers/suscripcion_provider.dart';
 import 'package:provider/provider.dart';
 
-/// Suscripción con tres planes (modelo de prestación de servicios).
 class PlanesScreen extends StatelessWidget {
   const PlanesScreen({super.key});
 
@@ -35,9 +33,9 @@ class PlanesScreen extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('PREMIUM', style: TextStyle(color: Colors.white70)),
+                    Text('Premium', style: TextStyle(color: Colors.white70)),
                     Text(
-                      'ELIGE TU PLAN',
+                      'Elige tu plan',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 24,
@@ -61,10 +59,7 @@ class PlanesScreen extends StatelessWidget {
                     final tarjetas = PlanModel.planes
                         .asMap()
                         .entries
-                        .map((e) => Aparece(
-                              indice: e.key,
-                              child: _tarjetaPlan(context, e.value, susc),
-                            ))
+                        .map((e) => _tarjetaPlan(context, e.value, susc))
                         .toList();
                     if (constraints.maxWidth >= 800) {
                       return Row(
@@ -114,7 +109,7 @@ class PlanesScreen extends StatelessWidget {
               context: context,
               builder: (c) => AlertDialog(
                 title: const Text('Alerta del sistema'),
-                content: const Text('¿Deseas cancelar tu suscripción?'),
+                content: const Text('Cancelar suscripcion?'),
                 actions: [
                   TextButton(
                     child: const Text('Aceptar'),
@@ -158,7 +153,7 @@ class PlanesScreen extends StatelessWidget {
               children: [
                 Flexible(
                   child: Text(
-                    plan.nombre.toUpperCase(),
+                    plan.nombre,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
@@ -177,7 +172,7 @@ class PlanesScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: const Text(
-                      'POPULAR',
+                      'Popular',
                       style: TextStyle(color: Colors.white, fontSize: 11),
                     ),
                   ),
@@ -192,7 +187,7 @@ class PlanesScreen extends StatelessWidget {
               style: const TextStyle(fontSize: 30, fontWeight: FontWeight.w800),
             ),
             Text(
-              plan.meses == 1 ? 'por mes' : 'por ${plan.meses} meses',
+              plan.meses == 1 ? 'Por mes' : 'Por ${plan.meses} meses',
               style: const TextStyle(fontSize: 12),
             ),
             const Divider(height: 24),
@@ -221,7 +216,7 @@ class PlanesScreen extends StatelessWidget {
                   shape: const StadiumBorder(),
                   minimumSize: const Size.fromHeight(46),
                 ),
-                child: Text(esActual ? 'PLAN ACTUAL' : 'SUSCRIBIRME'),
+                child: Text(esActual ? 'Plan actual' : 'Suscribirme'),
               ),
             ),
           ],

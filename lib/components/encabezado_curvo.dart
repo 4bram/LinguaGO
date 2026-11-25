@@ -1,10 +1,9 @@
+import 'package:lingua_go/config/cache_imagenes.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:lingua_go/components/curva_clipper.dart';
 import 'package:lingua_go/components/theme_app.dart';
 
-/// Encabezado morado con esquina curva, sombra y círculos decorativos.
-/// Si recibe [imagenUrl] la muestra detrás (en caché local) con un velo morado.
 class EncabezadoCurvo extends StatelessWidget {
   final double alto;
   final Widget child;
@@ -41,6 +40,7 @@ class EncabezadoCurvo extends StatelessWidget {
             if (tieneImagen)
               CachedNetworkImage(
                 imageUrl: imagenUrl!,
+                cacheManager: CacheImagenes.manager,
                 fit: BoxFit.cover,
                 errorWidget: (context, url, error) => const SizedBox(),
               ),
@@ -62,7 +62,7 @@ class EncabezadoCurvo extends StatelessWidget {
                 backgroundColor: Colors.white.withValues(alpha: 0.06),
               ),
             ),
-            // Altura fija: se limita el escalado de texto para evitar overflow.
+
             MediaQuery.withClampedTextScaling(
               maxScaleFactor: 1.2,
               child: child,

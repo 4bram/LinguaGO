@@ -1,76 +1,115 @@
 import 'dart:async';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lingua_go/config/email_auth.dart';
-import 'package:lingua_go/config/firestore_usuario.dart';
 import 'package:lingua_go/config/social_auth.dart';
 import 'package:lingua_go/config/storage_service.dart';
 
-/// Sesión del usuario (Firebase Authentication).
-/// (Se llama SesionProvider para no chocar con la clase AuthProvider de firebase_auth.)
 class SesionProvider extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final EmailAuth _emailAuth = EmailAuth();
   final SocialAuth _socialAuth = SocialAuth();
   final StorageService _storage = StorageService();
 
-  final FirestoreUsuario _fsUsuario = FirestoreUsuario();
-
   User? usuario;
 
-  /// ¿El usuario está en la colección "admins"? (puede cambiar imágenes de unidades)
-  bool esAdmin = false;
-  String? _uidAdmin;
   bool cargando = false;
+
+  bool bienvenidaPendiente = false;
   bool subiendoFoto = false;
   StreamSubscription<User?>? _sub;
 
+  static const int _esperaReenvio = 60;
+  static const int _esperaReenvioBloqueado = 180;
+  int segundosReenvio = 0;
+  Timer? _timerReenvio;
+
+  bool get puedeReenviar => segundosReenvio == 0;
+
   SesionProvider() {
     usuario = _auth.currentUser;
-    _cargaAdmin(usuario);
+    _cargaBienvenida(usuario);
     _sub = _auth.userChanges().listen((u) {
       usuario = u;
       notifyListeners();
-      _cargaAdmin(u);
+      _cargaBienvenida(u);
     });
   }
 
-  Future<void> _cargaAdmin(User? u) async {
+  String? _bienvenidaVistaUid;
+
+  String _claveBienvenida(String uid) => 'bienvenida_pendiente_$uid';
+
+  Future<void> _cargaBienvenida(User? u) async {
     if (u == null) {
-      _uidAdmin = null;
-      if (esAdmin) {
-        esAdmin = false;
+      if (bienvenidaPendiente) {
+        bienvenidaPendiente = false;
         notifyListeners();
       }
       return;
     }
-    if (_uidAdmin == u.uid) return;
-    _uidAdmin = u.uid;
-    final valor = await _fsUsuario.m_esAdmin(u.uid);
-    if (_uidAdmin != u.uid) return;
-    if (valor != esAdmin) {
-      esAdmin = valor;
+    if (u.uid == _bienvenidaVistaUid) return;
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final guardada = prefs.getBool(_claveBienvenida(u.uid)) ?? false;
+      if (guardada != bienvenidaPendiente && guardada) {
+        bienvenidaPendiente = true;
+        notifyListeners();
+      }
+    } catch (_) {}
+  }
+
+  Future<void> _marcaBienvenida() async {
+    bienvenidaPendiente = true;
+    notifyListeners();
+    final uid = _auth.currentUser?.uid;
+    if (uid == null) return;
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool(_claveBienvenida(uid), true);
+    } catch (_) {}
+  }
+
+  void _iniciaEsperaReenvio(int segundos) {
+    _timerReenvio?.cancel();
+    segundosReenvio = segundos;
+    notifyListeners();
+    _timerReenvio = Timer.periodic(const Duration(seconds: 1), (t) {
+      segundosReenvio--;
+      if (segundosReenvio <= 0) {
+        segundosReenvio = 0;
+        t.cancel();
+      }
       notifyListeners();
-    }
+    });
+  }
+
+  void _detieneEsperaReenvio() {
+    _timerReenvio?.cancel();
+    segundosReenvio = 0;
   }
 
   @override
   void dispose() {
+    _timerReenvio?.cancel();
     _sub?.cancel();
     super.dispose();
   }
 
-  // ---------- Datos derivados ----------
-  /// ¿Se registró con correo y contraseña?
   bool get esCorreo =>
       usuario?.providerData.any((p) => p.providerId == 'password') ?? false;
 
-  /// Las cuentas de correo deben confirmar su email; las de Google/GitHub no.
   bool get correoVerificado =>
       usuario != null && (!esCorreo || usuario!.emailVerified);
 
   String? get fotoUrl => usuario?.photoURL;
+
+  String get nombreCorto {
+    final partes = nombre.trim().split(RegExp(r'\s+'));
+    return partes.isEmpty ? '' : partes.first;
+  }
 
   String get correo => usuario?.email ?? '';
 
@@ -84,10 +123,9 @@ class SesionProvider extends ChangeNotifier {
     final ids = usuario?.providerData.map((p) => p.providerId).toList() ?? [];
     if (ids.contains('google.com')) return 'Google';
     if (ids.contains('github.com')) return 'GitHub';
-    return 'Correo y contraseña';
+    return 'Correo y contrasena';
   }
 
-  // ---------- Acciones ----------
   Future<String?> _ejecuta(Future<String?> Function() accion) async {
     cargando = true;
     notifyListeners();
@@ -100,20 +138,63 @@ class SesionProvider extends ChangeNotifier {
   Future<String?> m_login(String correo, String pass) =>
       _ejecuta(() => _emailAuth.m_loginUser(user: correo, pass: pass));
 
-  Future<String?> m_registra(String nombre, String correo, String pass) =>
-      _ejecuta(() => _emailAuth.m_creaUsuario(nombre: nombre, user: correo, pass: pass));
+  Future<String?> m_registra(String nombre, String correo, String pass) async {
+    final error = await _ejecuta(
+        () => _emailAuth.m_creaUsuario(nombre: nombre, user: correo, pass: pass));
+    if (error == null) {
+      await _marcaBienvenida();
+      _iniciaEsperaReenvio(_esperaReenvio);
+    }
+    return error;
+  }
 
-  Future<String?> m_loginGoogle() => _ejecuta(_socialAuth.m_loginGoogle);
+  Future<String?> m_loginGoogle() => _conDeteccionNueva(_socialAuth.m_loginGoogle);
 
-  Future<String?> m_loginGithub() => _ejecuta(_socialAuth.m_loginGithub);
+  Future<String?> m_loginGithub() => _conDeteccionNueva(_socialAuth.m_loginGithub);
 
-  Future<String?> m_reenviaVerificacion() =>
-      _ejecuta(_emailAuth.m_reenviaVerificacion);
+  Future<String?> _conDeteccionNueva(Future<String?> Function() accion) async {
+    final error = await _ejecuta(accion);
+    if (error == null) {
+      final m = _auth.currentUser?.metadata;
+      final c = m?.creationTime;
+      final l = m?.lastSignInTime;
+      if (c != null && l != null && l.difference(c).inSeconds.abs() < 15) {
+        await _marcaBienvenida();
+      }
+    }
+    return error;
+  }
+
+  Future<void> m_bienvenidaHecha() async {
+    final uid = _auth.currentUser?.uid;
+    _bienvenidaVistaUid = uid;
+    bienvenidaPendiente = false;
+    notifyListeners();
+    if (uid == null) return;
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove(_claveBienvenida(uid));
+    } catch (_) {}
+  }
+
+  Future<String?> m_reenviaVerificacion() async {
+    if (!puedeReenviar) {
+      return 'Espera $segundosReenvio s para volver a reenviar el correo';
+    }
+    final error = await _ejecuta(_emailAuth.m_reenviaVerificacion);
+    if (error == null) {
+      _iniciaEsperaReenvio(_esperaReenvio);
+    } else if (error == EmailAuth.mensajeDemasiadosIntentos) {
+      _iniciaEsperaReenvio(_esperaReenvioBloqueado);
+      return 'Ya se enviaron varios correos. Revisa tu bandeja y la carpeta de spam; '
+          'podrás pedir otro en unos minutos';
+    }
+    return error;
+  }
 
   Future<String?> m_recuperaPassword(String correo) =>
       _ejecuta(() => _emailAuth.m_recuperaPassword(correo));
 
-  /// Vuelve a consultar a Firebase si el usuario ya confirmó su correo.
   Future<void> m_recargaUsuario() async {
     try {
       await _auth.currentUser?.reload();
@@ -123,14 +204,15 @@ class SesionProvider extends ChangeNotifier {
   }
 
   Future<void> m_cerrarSesion() async {
+    bienvenidaPendiente = false;
+    _detieneEsperaReenvio();
     await _socialAuth.m_cerrarGoogle();
     await _auth.signOut();
   }
 
-  /// Cambia la foto de perfil (SOLO cuentas registradas con correo).
   Future<String?> m_cambiaFoto() async {
     if (!esCorreo) {
-      return 'La foto de perfil solo se puede cambiar en cuentas de correo';
+      return 'La foto solo se cambia con cuenta de correo';
     }
     try {
       final img = await ImagePicker().pickImage(

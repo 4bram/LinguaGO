@@ -3,15 +3,14 @@ import 'package:lingua_go/config/firestore_usuario.dart';
 import 'package:lingua_go/config/sonidos_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-/// Tema (claro/oscuro) y sonidos POR USUARIO, y estado del onboarding.
-/// El tema de cada cuenta se guarda en Firestore (usuarios/{uid}/preferencias)
-/// y en caché local con el uid, así no se mezcla entre cuentas del mismo equipo.
 class PreferenciasProvider extends ChangeNotifier {
   final FirestoreUsuario _fs = FirestoreUsuario();
   String? _uid;
   ThemeMode modo = ThemeMode.light;
   bool onboardingVisto = false;
   bool cargado = false;
+
+  bool vistoAntesDeEntrar = false;
   bool sonidos = true;
   bool splashTerminado = false;
   int paginaOnboarding = 0;
@@ -31,9 +30,6 @@ class PreferenciasProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Al iniciar sesión: aplica las preferencias de ESTE usuario
-  /// (tema y sonidos). Primero las locales y luego las de la nube,
-  /// que también sirven si cambió de dispositivo.
   Future<void> m_cargaUsuario(String uid) async {
     _uid = uid;
     try {
@@ -65,13 +61,11 @@ class PreferenciasProvider extends ChangeNotifier {
     } catch (_) {}
   }
 
-  /// Al cerrar sesión vuelve a los valores por defecto
-  /// (lo de otra cuenta no se hereda).
   void m_limpiaUsuario() {
     _uid = null;
     modo = ThemeMode.light;
     sonidos = true;
-    // Se llama mientras el árbol se destruye: se notifica después del frame.
+
     WidgetsBinding.instance.addPostFrameCallback((_) => notifyListeners());
   }
 
@@ -87,12 +81,11 @@ class PreferenciasProvider extends ChangeNotifier {
     await _fs.m_guardaTema(uid, oscuro);
   }
 
-  /// Efectos de sonido: se guardan POR USUARIO (local y en la nube).
   Future<void> m_cambiaSonidos(bool v) async {
     sonidos = v;
     SonidosService.activo = v;
     notifyListeners();
-    if (v) SonidosService.m_presionar();
+    if (v) SonidosService.m_click();
     final uid = _uid;
     if (uid == null) return;
     try {
@@ -101,6 +94,8 @@ class PreferenciasProvider extends ChangeNotifier {
     } catch (_) {}
     await _fs.m_guardaPreferencia(uid, 'sonidos', v);
   }
+
+  void m_gastaIntro() => vistoAntesDeEntrar = false;
 
   void m_terminaSplash() {
     splashTerminado = true;
@@ -114,6 +109,7 @@ class PreferenciasProvider extends ChangeNotifier {
 
   Future<void> m_terminaOnboarding() async {
     onboardingVisto = true;
+    vistoAntesDeEntrar = true;
     notifyListeners();
     try {
       final prefs = await SharedPreferences.getInstance();

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,7 @@ import 'package:lingua_go/firebase_options.dart';
 import 'package:lingua_go/providers/busqueda_provider.dart';
 import 'package:lingua_go/providers/carrito_provider.dart';
 import 'package:lingua_go/providers/flashcards_provider.dart';
+import 'package:lingua_go/providers/guia_provider.dart';
 import 'package:lingua_go/providers/nav_provider.dart';
 import 'package:lingua_go/providers/notificaciones_provider.dart';
 import 'package:lingua_go/providers/preferencias_provider.dart';
@@ -32,17 +34,18 @@ import 'package:provider/provider.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  // .env es opcional: la app puede iniciar sin claves privadas ni archivo local.
+  FirebaseFirestore.instance.settings = const Settings(
+    persistenceEnabled: true,
+    cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED,
+  );
   try {
     await dotenv.load(fileName: '.env');
   } catch (e) {
     debugPrint('Archivo .env no encontrado; se usarán valores por defecto: $e');
   }
 
-  // Sonidos: lee el último valor guardado y configura el audio
   await SonidosService.m_inicializa();
 
-  // Handler de notificaciones en segundo plano / app cerrada
   if (NotificacionesService.soportado) {
     FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
   }
@@ -55,6 +58,7 @@ void main() async {
         ChangeNotifierProvider(create: (_) => PreferenciasProvider()),
         ChangeNotifierProvider(create: (_) => SesionProvider()),
         ChangeNotifierProvider(create: (_) => NavProvider()),
+        ChangeNotifierProvider(create: (_) => GuiaProvider()),
         ChangeNotifierProvider(create: (_) => UnidadesProvider()),
         ChangeNotifierProvider(create: (_) => SuscripcionProvider()),
         ChangeNotifierProvider(create: (_) => FlashcardsProvider()),
@@ -66,7 +70,6 @@ void main() async {
     ),
   );
 
-  // Listener GLOBAL de FCM (activo en todas las pantallas)
   notificaciones.m_inicializa();
 }
 
@@ -82,10 +85,15 @@ class MyApp extends StatelessWidget {
       title: 'LinguaGo',
       navigatorKey: GlobalValues.navigatorKey,
       scaffoldMessengerKey: GlobalValues.messengerKey,
-      // Sonido al abrir y cerrar pantallas, hojas y diálogos
-      navigatorObservers: [SonidoObserver()],
-      // Sonido de toque en toda la app
-      builder: (context, child) => ToqueSonoro(child: child ?? const SizedBox.shrink()),
+
+      builder: (context, child) => ToqueSonoro(
+
+        child: MediaQuery.withClampedTextScaling(
+          minScaleFactor: 0.85,
+          maxScaleFactor: 1.3,
+          child: child ?? const SizedBox.shrink(),
+        ),
+      ),
       theme: ThemeApp.claro(),
       darkTheme: ThemeApp.oscuro(),
       themeMode: pref.modo,

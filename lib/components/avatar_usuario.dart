@@ -1,11 +1,10 @@
+import 'package:lingua_go/config/cache_imagenes.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:lingua_go/components/theme_app.dart';
 import 'package:lingua_go/providers/sesion_provider.dart';
 import 'package:provider/provider.dart';
 
-/// Avatar del usuario con borde blanco y sombra. Escucha al SesionProvider,
-/// por eso la foto se sincroniza sola en el dashboard y en el perfil.
 class AvatarUsuario extends StatelessWidget {
   final double radio;
 
@@ -31,7 +30,7 @@ class AvatarUsuario extends StatelessWidget {
       child: CircleAvatar(
         radius: radio,
         backgroundColor: Colors.white,
-        backgroundImage: tieneFoto ? CachedNetworkImageProvider(url) : null,
+        backgroundImage: tieneFoto ? CachedNetworkImageProvider(url, cacheManager: CacheImagenes.manager) : null,
         child: tieneFoto
             ? null
             : Icon(Icons.person, size: radio, color: ThemeApp.morado),

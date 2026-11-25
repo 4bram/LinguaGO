@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
-import 'package:lingua_go/config/sonidos_service.dart';
 import 'package:lingua_go/models/producto_model.dart';
 
-/// Estado de la pantalla de contenido de un producto comprado:
-/// búsqueda, tarjetas volteadas y lectura en voz alta (TTS).
 class ContenidoProvider extends ChangeNotifier {
   final ProductoModel producto;
   final FlutterTts _tts = FlutterTts();
@@ -20,7 +17,6 @@ class ContenidoProvider extends ChangeNotifier {
   bool m_estaVolteada(int s, int i) => _volteadas.contains(_clave(s, i));
 
   void m_voltea(int s, int i) {
-    SonidosService.m_burbujaSuave();
     final k = _clave(s, i);
     if (!_volteadas.remove(k)) _volteadas.add(k);
     notifyListeners();
@@ -31,7 +27,6 @@ class ContenidoProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Secciones filtradas por la búsqueda; conserva el índice original.
   List<MapEntry<int, List<MapEntry<int, ItemContenido>>>> get seccionesFiltradas {
     final r = <MapEntry<int, List<MapEntry<int, ItemContenido>>>>[];
     for (var s = 0; s < producto.secciones.length; s++) {

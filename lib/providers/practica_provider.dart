@@ -2,9 +2,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:lingua_go/config/sonidos_service.dart';
 
-/// Estado de una actividad de práctica (escucha, gramática, escritura,
-/// vocabulario y evaluación). Cada pantalla de práctica crea su propia
-/// instancia, así que nada se mezcla entre actividades.
 class PracticaProvider extends ChangeNotifier {
   List<Map<String, String>> preguntas = [];
   int indice = 0;
@@ -14,10 +11,8 @@ class PracticaProvider extends ChangeNotifier {
   bool terminada = false;
   bool guardado = false;
 
-  /// Opciones de la pregunta actual (se conservan al reconstruir la pantalla).
   List<String>? opcionesCache;
 
-  /// Carga las preguntas. No notifica: se llama mientras se arma la pantalla.
   void m_inicia(List<Map<String, String>> nuevas) {
     preguntas = nuevas;
     indice = 0;
@@ -35,7 +30,7 @@ class PracticaProvider extends ChangeNotifier {
     respondida = true;
     if (correcta) {
       aciertos++;
-      SonidosService.m_exito(volumen: 0.5);
+      SonidosService.m_acierto();
     }
     notifyListeners();
   }
@@ -45,12 +40,11 @@ class PracticaProvider extends ChangeNotifier {
     respondida = true;
     if (correcta) {
       aciertos++;
-      SonidosService.m_exito(volumen: 0.5);
+      SonidosService.m_acierto();
     }
     notifyListeners();
   }
 
-  /// Avanza a la siguiente pregunta. Devuelve true si ya era la última.
   bool m_siguiente() {
     if (indice + 1 >= preguntas.length) {
       terminada = true;

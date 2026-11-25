@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:lingua_go/components/guia_overlay.dart';
 import 'package:lingua_go/components/responsive.dart';
 import 'package:lingua_go/components/theme_app.dart';
 import 'package:lingua_go/providers/carrito_provider.dart';
+import 'package:lingua_go/providers/guia_provider.dart';
 import 'package:lingua_go/providers/nav_provider.dart';
 import 'package:lingua_go/providers/notificaciones_provider.dart';
 import 'package:lingua_go/providers/preferencias_provider.dart';
@@ -14,7 +16,6 @@ import 'package:lingua_go/screens/planes_screen.dart';
 import 'package:lingua_go/screens/unidades_screen.dart';
 import 'package:provider/provider.dart';
 
-/// Contenedor principal: barra inferior (móvil) o riel lateral (escritorio).
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
 
@@ -28,6 +29,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   late final CarritoProvider _carrito;
   late final PreferenciasProvider _preferencias;
   late final NotificacionesProvider _notificaciones;
+  late final GuiaProvider _guia;
 
   @override
   void initState() {
@@ -37,7 +39,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
     _carrito = context.read<CarritoProvider>();
     _preferencias = context.read<PreferenciasProvider>();
     _notificaciones = context.read<NotificacionesProvider>();
-    // Se inicia después del primer frame para no notificar durante el build.
+    _guia = context.read<GuiaProvider>();
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
       final uid = context.read<SesionProvider>().usuario?.uid;
@@ -47,6 +50,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         _carrito.m_iniciaEscucha(uid);
         _preferencias.m_cargaUsuario(uid);
         _notificaciones.m_cargaUsuario(uid);
+        _guia.m_iniciaSiEsNueva(uid);
       }
     });
   }
@@ -58,11 +62,23 @@ class _DashboardScreenState extends State<DashboardScreen> {
     _carrito.m_detiene();
     _preferencias.m_limpiaUsuario();
     _notificaciones.m_limpiaUsuario();
+    _guia.m_limpia();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        _pantalla(context),
+        const Positioned.fill(child: GuiaOverlay()),
+      ],
+    );
+  }
+
+  Widget _pantalla(BuildContext context) {
     final nav = context.watch<NavProvider>();
 
     const paginas = <Widget>[
@@ -73,14 +89,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
     ];
     final pagina = paginas[nav.indice];
 
-    if (Responsivo.esEscritorio(context)) {
+    if (Responsivo.usaRiel(context)) {
+      final ancho = MediaQuery.sizeOf(context).width;
+      final extendido = ancho >= 1100;
       return Scaffold(
         body: Row(
           children: [
             NavigationRail(
               selectedIndex: nav.indice,
               onDestinationSelected: (i) => context.read<NavProvider>().m_cambia(i),
-              labelType: NavigationRailLabelType.all,
+              extended: extendido,
+              labelType: extendido ? NavigationRailLabelType.none : NavigationRailLabelType.all,
               destinations: const [
                 NavigationRailDestination(
                   icon: Icon(Icons.menu_book),

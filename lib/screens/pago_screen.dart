@@ -4,11 +4,11 @@ import 'package:lingua_go/components/botones_campos.dart';
 import 'package:lingua_go/components/responsive.dart';
 import 'package:lingua_go/components/theme_app.dart';
 import 'package:lingua_go/components/validadores.dart';
+import 'package:lingua_go/config/sonidos_service.dart';
 import 'package:lingua_go/models/plan_model.dart';
 import 'package:lingua_go/providers/suscripcion_provider.dart';
 import 'package:provider/provider.dart';
 
-/// Pantalla nativa de pago: captura y valida los datos de la tarjeta.
 class PagoScreen extends StatefulWidget {
   const PagoScreen({super.key});
 
@@ -46,6 +46,7 @@ class _PagoScreenState extends State<PagoScreen> {
     if (!mounted) return;
 
     if (resultado.exito) {
+      SonidosService.m_compra();
       await showDialog(
         context: context,
         builder: (c) => AlertDialog(
@@ -121,7 +122,7 @@ class _PagoScreenState extends State<PagoScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'PLAN ${plan.nombre.toUpperCase()}',
+                          'Plan ${plan.nombre}',
                           style: const TextStyle(
                             color: Colors.white70,
                             fontWeight: FontWeight.bold,
@@ -155,7 +156,7 @@ class _PagoScreenState extends State<PagoScreen> {
                     keyboardType: TextInputType.number,
                     inputFormatters: [FormatoTarjeta()],
                     validator: Validadores.tarjeta,
-                    decoration: decoracionCampo('Número de tarjeta', Icons.credit_card),
+                    decoration: decoracionCampo('Numero de tarjeta', Icons.credit_card),
                   ),
                   const SizedBox(height: 14),
                   Row(
@@ -188,19 +189,15 @@ class _PagoScreenState extends State<PagoScreen> {
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    susc.modoSimulado
-                        ? 'Modo demostración: no se realiza ningún cargo real. '
-                            'Usa una tarjeta de prueba válida para activar la suscripción localmente. '
-                            'Para simular un rechazo, termina el número en 0002.'
-                        : 'Pago de prueba con Stripe: usa 4242 4242 4242 4242, '
-                            'cualquier fecha futura y CVV. Para un rechazo usa 4000 0000 0000 0002. '
-                            'No se realiza ningún cargo real.',
+                    'Tarjetas de prueba\n'
+                    'Aprobada: 4242 4242 4242 4242\n'
+                    'Rechazada: 4000 0000 0000 0002',
                     style: const TextStyle(fontSize: 11),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 18),
                   BotonPrincipal(
-                    texto: 'PAGAR \$${plan.precio} MXN',
+                    texto: 'Pagar \$${plan.precio} MXN',
                     icono: Icons.lock,
                     cargando: susc.procesando,
                     onPressed: () => _pagar(plan),

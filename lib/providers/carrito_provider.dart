@@ -2,10 +2,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:lingua_go/config/firestore_usuario.dart';
 import 'package:lingua_go/config/pasarela_pago.dart';
-import 'package:lingua_go/config/sonidos_service.dart';
 import 'package:lingua_go/models/producto_model.dart';
 
-/// Carrito de la tienda, pago con Stripe e historial de pedidos.
 class CarritoProvider extends ChangeNotifier {
   final FirestoreUsuario _fs = FirestoreUsuario();
   final PasarelaPago _pasarela = PasarelaPago();
@@ -13,7 +11,7 @@ class CarritoProvider extends ChangeNotifier {
   final Map<String, int> _cantidades = {};
   List<Map<String, dynamic>> pedidos = [];
   bool procesando = false;
-  String? categoriaFiltro; // null = todas
+  String? categoriaFiltro;
   String? _uid;
   StreamSubscription<List<Map<String, dynamic>>>? _sub;
 
@@ -34,7 +32,6 @@ class CarritoProvider extends ChangeNotifier {
 
   int get total => lineas.fold(0, (s, l) => s + l.key.precio * l.value);
 
-  /// IDs de los productos ya comprados (derivados de los pedidos pagados).
   Set<String> get compradosIds {
     final r = <String>{};
     for (final pedido in pedidos) {
@@ -57,22 +54,19 @@ class CarritoProvider extends ChangeNotifier {
 
   bool m_loTiene(String id) => compradosIds.contains(id);
 
-  /// Productos comprados, en el orden del catálogo (Mi biblioteca).
   List<ProductoModel> get biblioteca {
     final ids = compradosIds;
     return [for (final p in ProductoModel.catalogo) if (ids.contains(p.id)) p];
   }
 
   void m_agrega(String id) {
-    // Un contenido digital se compra una sola vez.
+
     if (m_loTiene(id) || cantidadDe(id) >= 1) return;
     _cantidades[id] = 1;
-    SonidosService.m_burbuja();
     notifyListeners();
   }
 
   void m_quita(String id) {
-    SonidosService.m_burbujaSuave();
     final c = cantidadDe(id);
     if (c <= 1) {
       _cantidades.remove(id);
@@ -96,7 +90,6 @@ class CarritoProvider extends ChangeNotifier {
     }, onError: (_) {});
   }
 
-  /// Se llama al salir del dashboard (cierre de sesión). No notifica.
   void m_detiene() {
     _sub?.cancel();
     _sub = null;
@@ -114,7 +107,7 @@ class CarritoProvider extends ChangeNotifier {
   }) async {
     final items = lineas;
     if (items.isEmpty) {
-      return const ResultadoPago(exito: false, mensaje: 'Tu carrito está vacío.');
+      return const ResultadoPago(exito: false, mensaje: 'Carrito vacio');
     }
     final monto = total;
     procesando = true;
@@ -151,7 +144,6 @@ class CarritoProvider extends ChangeNotifier {
         });
       }
       _cantidades.clear();
-      SonidosService.m_celebra();
     }
 
     procesando = false;

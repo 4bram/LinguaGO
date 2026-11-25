@@ -1,6 +1,5 @@
 import 'package:flutter/services.dart';
 
-/// Validaciones de formularios (registro, login y tarjeta de pago).
 class Validadores {
   static String? requerido(String? v, [String campo = 'Este campo']) {
     if (v == null || v.trim().isEmpty) return '$campo es obligatorio';
@@ -8,18 +7,17 @@ class Validadores {
   }
 
   static String? correo(String? v) {
-    if (v == null || v.trim().isEmpty) return 'El correo es obligatorio';
+    if (v == null || v.trim().isEmpty) return 'Correo obligatorio';
     final ok = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$').hasMatch(v.trim());
-    return ok ? null : 'Correo no válido';
+    return ok ? null : 'Correo no valido';
   }
 
   static String? password(String? v) {
-    if (v == null || v.isEmpty) return 'La contraseña es obligatoria';
-    if (v.length < 6) return 'Mínimo 6 caracteres';
+    if (v == null || v.isEmpty) return 'Contrasena obligatoria';
+    if (v.length < 6) return 'Min 6 caracteres';
     return null;
   }
 
-  /// Algoritmo de Luhn para números de tarjeta.
   static bool luhn(String numero) {
     int suma = 0;
     bool alterna = false;
@@ -37,9 +35,9 @@ class Validadores {
 
   static String? tarjeta(String? v) {
     final limpio = (v ?? '').replaceAll(' ', '');
-    if (limpio.isEmpty) return 'El número es obligatorio';
-    if (limpio.length != 16) return 'Debe tener 16 dígitos';
-    if (!luhn(limpio)) return 'Número de tarjeta inválido';
+    if (limpio.isEmpty) return 'Numero obligatorio';
+    if (limpio.length != 16) return 'Debe tener 16 digitos';
+    if (!luhn(limpio)) return 'Num de tarjeta invalido';
     return null;
   }
 
@@ -49,19 +47,18 @@ class Validadores {
     }
     final mes = int.parse(v.substring(0, 2));
     final anio = 2000 + int.parse(v.substring(3));
-    if (mes < 1 || mes > 12) return 'Mes inválido';
+    if (mes < 1 || mes > 12) return 'Mes invalido';
     final finDeMes = DateTime(anio, mes + 1, 1);
     if (!finDeMes.isAfter(DateTime.now())) return 'Tarjeta vencida';
     return null;
   }
 
   static String? cvv(String? v) {
-    if (v == null || !RegExp(r'^\d{3,4}$').hasMatch(v)) return 'CVV inválido';
+    if (v == null || !RegExp(r'^\d{3,4}$').hasMatch(v)) return 'CVV invalido';
     return null;
   }
 }
 
-/// Da formato "1234 5678 9012 3456" mientras se escribe.
 class FormatoTarjeta extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(
@@ -83,7 +80,6 @@ class FormatoTarjeta extends TextInputFormatter {
   }
 }
 
-/// Da formato "MM/AA" mientras se escribe.
 class FormatoExpira extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(

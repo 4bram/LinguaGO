@@ -7,7 +7,6 @@ import 'package:lingua_go/providers/flashcards_provider.dart';
 import 'package:lingua_go/providers/unidades_provider.dart';
 import 'package:provider/provider.dart';
 
-/// Tarjetas de vocabulario. SENSOR: acelerómetro (agitar = siguiente tarjeta).
 class FlashcardsScreen extends StatefulWidget {
   const FlashcardsScreen({super.key});
 
@@ -69,7 +68,7 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: flash.palabras.isEmpty
-              ? const CargandoBarra(texto: 'Preparando tarjetas…')
+              ? const CargandoBarra(texto: 'Preparando tarjetas...')
               : (flash.terminada ? _final(context, flash) : _tarjetas(context, flash)),
         ),
       ),
@@ -88,7 +87,7 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
         Expanded(
           child: GestureDetector(
             onTap: () => context.read<FlashcardsProvider>().m_voltea(),
-            // La key reinicia la animación al cambiar de tarjeta
+
             child: TweenAnimationBuilder<double>(
               key: ValueKey(flash.indice),
               tween: Tween<double>(begin: 0, end: flash.volteada ? 1 : 0),
@@ -161,8 +160,8 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(idioma.toUpperCase(),
-                      style: const TextStyle(color: Colors.white70, letterSpacing: 2)),
+                  Text(idioma,
+                      style: const TextStyle(color: Colors.white70, letterSpacing: 0.5)),
                   const SizedBox(height: 12),
                   Text(
                     texto,
@@ -185,11 +184,10 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
     );
   }
 
-  /// Muestra la lectura en vivo del acelerómetro.
   Widget _indicadorSensor(FlashcardsProvider flash) {
     if (!flash.sensorDisponible) {
       return const Text(
-        'Este dispositivo no tiene acelerómetro: usa el botón Siguiente.',
+        'Sin acelerometro, usa el boton',
         textAlign: TextAlign.center,
         style: TextStyle(fontSize: 12),
       );
@@ -203,7 +201,7 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
             const SizedBox(width: 6),
             Flexible(
               child: Text(
-                'Agita el teléfono para la siguiente · ${flash.fuerza.toStringAsFixed(1)} m/s²',
+                'Agita para la siguiente · ${flash.fuerza.toStringAsFixed(1)} M/S²',
                 textAlign: TextAlign.center,
                 style: const TextStyle(fontSize: 12),
               ),
@@ -234,7 +232,7 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
         const Icon(Icons.emoji_events, size: 96, color: ThemeApp.lila),
         const SizedBox(height: 12),
         const Text(
-          '¡Sesión completa!',
+          'Sesion completa!',
           style: TextStyle(fontSize: 26, fontWeight: FontWeight.w800),
         ),
         const SizedBox(height: 8),
@@ -247,7 +245,7 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
             onPressed: () {
               final unidad = flash.unidad;
               final cap = flash.capituloIndex;
-              // Solo cuenta para el avance si se estudió desde un capítulo.
+
               if (unidad != null && cap != null) {
                 context.read<UnidadesProvider>().m_completaActividad(unidad, cap, 'tarjetas');
               }
@@ -258,7 +256,7 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
               foregroundColor: Colors.white,
               shape: const StadiumBorder(),
             ),
-            child: Text(flash.capituloIndex != null ? 'GUARDAR AVANCE' : 'TERMINAR'),
+            child: Text(flash.capituloIndex != null ? 'Guardar avance' : 'Terminar'),
           ),
         ),
         TextButton(

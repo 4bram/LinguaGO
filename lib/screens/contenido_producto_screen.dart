@@ -7,7 +7,6 @@ import 'package:lingua_go/providers/contenido_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-/// Contenido real de un producto ya comprado (lo que el usuario recibe).
 class ContenidoProductoScreen extends StatelessWidget {
   final ProductoModel producto;
   const ContenidoProductoScreen({super.key, required this.producto});
@@ -17,7 +16,7 @@ class ContenidoProductoScreen extends StatelessWidget {
     final messenger = ScaffoldMessenger.of(context);
     if (!storage.configurado) {
       messenger.showSnackBar(const SnackBar(
-        content: Text('Configura Supabase en el .env para descargar el archivo.'),
+        content: Text('El archivo no esta disponible por ahora.'),
       ));
       return;
     }
@@ -27,7 +26,7 @@ class ContenidoProductoScreen extends StatelessWidget {
     ).catchError((_) => false);
     if (!ok) {
       messenger.showSnackBar(const SnackBar(
-        content: Text('No se pudo abrir el archivo. Revisa tu conexión y que esté subido al bucket "recursos".'),
+        content: Text('No se pudo abrir el archivo'),
       ));
     }
   }
@@ -51,8 +50,8 @@ class ContenidoProductoScreen extends StatelessWidget {
             const SizedBox(height: 2),
             Text(
               producto.secciones.isEmpty
-                  ? 'Este producto se entrega como archivo descargable.'
-                  : 'Descarga la versión completa para imprimir o usar sin la app.',
+                  ? 'Archivo descargable'
+                  : 'Descarga el archivo completo',
               style: const TextStyle(fontSize: 12),
             ),
             const SizedBox(height: 10),
@@ -98,7 +97,7 @@ class ContenidoProductoScreen extends StatelessWidget {
                   TextField(
                     onChanged: c.m_buscar,
                     decoration: InputDecoration(
-                      hintText: 'Buscar en este contenido…',
+                      hintText: 'Buscar en este contenido...',
                       prefixIcon: const Icon(Icons.search),
                       border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
                       isDense: true,
@@ -106,8 +105,7 @@ class ContenidoProductoScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 6),
                   Text(
-                    'Vista rápida en la app (funciona sin internet): '
-                    '${producto.totalItems} elementos · ${producto.secciones.length} secciones'
+                    'Vista previa: ${producto.totalItems} elementos · ${producto.secciones.length} secciones'
                     '${producto.modoTarjeta ? ' · toca una tarjeta para voltearla' : ''}',
                     style: const TextStyle(fontSize: 12),
                   ),

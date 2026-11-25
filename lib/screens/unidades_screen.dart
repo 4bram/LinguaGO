@@ -1,19 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:lingua_go/components/aparece.dart';
 import 'package:lingua_go/components/avatar_usuario.dart';
 import 'package:lingua_go/components/barras.dart';
 import 'package:lingua_go/components/encabezado_curvo.dart';
 import 'package:lingua_go/components/tarjeta_unidad.dart';
 import 'package:lingua_go/components/theme_app.dart';
-import 'package:lingua_go/config/sonidos_service.dart';
 import 'package:lingua_go/providers/busqueda_provider.dart';
 import 'package:lingua_go/providers/nav_provider.dart';
-import 'package:lingua_go/providers/sesion_provider.dart';
 import 'package:lingua_go/providers/suscripcion_provider.dart';
 import 'package:lingua_go/providers/unidades_provider.dart';
 import 'package:provider/provider.dart';
 
-/// Pantalla "Unidades principales" (diseño de referencia, pantalla 2).
 class UnidadesScreen extends StatefulWidget {
   const UnidadesScreen({super.key});
 
@@ -27,7 +23,7 @@ class _UnidadesScreenState extends State<UnidadesScreen> {
   @override
   void initState() {
     super.initState();
-    // Conserva el texto si la pestaña se reconstruye.
+
     _busqueda = TextEditingController(
       text: context.read<BusquedaProvider>().filtro,
     );
@@ -64,13 +60,13 @@ class _UnidadesScreenState extends State<UnidadesScreen> {
                   ),
                   const Spacer(),
                   const Text(
-                    'INGLÉS',
+                    'Ingles',
                     style: TextStyle(color: Colors.white70, fontSize: 14),
                   ),
                   const FittedBox(
                     fit: BoxFit.scaleDown,
                     child: Text(
-                      'UNIDADES PRINCIPALES',
+                      'Unidades principales',
                       maxLines: 1,
                       style: TextStyle(
                         color: Colors.white,
@@ -98,13 +94,12 @@ class _UnidadesScreenState extends State<UnidadesScreen> {
       return Center(child: Text(prov.error!, textAlign: TextAlign.center));
     }
     if (prov.cargando) {
-      return const CargandoBarra(texto: 'Cargando unidades…');
+      return const CargandoBarra(texto: 'Cargando unidades...');
     }
     if (prov.unidades.isEmpty) {
-      return const Center(child: Text('Aún no hay unidades disponibles'));
+      return const Center(child: Text('No hay unidades'));
     }
 
-    final esAdmin = context.watch<SesionProvider>().esAdmin;
     final filtro = context.watch<BusquedaProvider>().filtro;
     final consulta = filtro.trim().toLowerCase();
     final filtradas = prov.unidades.where((u) =>
@@ -123,7 +118,7 @@ class _UnidadesScreenState extends State<UnidadesScreen> {
             controller: _busqueda,
             onChanged: (v) => context.read<BusquedaProvider>().m_cambia(v),
             decoration: InputDecoration(
-              hintText: 'Buscar tema, capítulo o palabra…',
+              hintText: 'Buscar...',
               prefixIcon: const Icon(Icons.search),
               suffixIcon: filtro.isEmpty ? null : IconButton(
                 icon: const Icon(Icons.close),
@@ -139,16 +134,15 @@ class _UnidadesScreenState extends State<UnidadesScreen> {
         ),
         Expanded(
           child: filtradas.isEmpty
-              ? const Center(child: Text('No encontramos contenido con esa búsqueda.'))
+              ? const Center(child: Text('Sin resultados'))
               : LayoutBuilder(
       builder: (context, constraints) {
         final ancho = constraints.maxWidth;
         Widget tarjeta(int i) {
           final u = filtradas[i];
           final sinPlan = u.premium && !susc.activa;
-          // Se abre al aprobar la evaluación final de la unidad anterior
-          // (los administradores pueden abrir cualquiera para revisar contenido).
-          final sinAprobar = !esAdmin && !prov.m_desbloqueada(u);
+
+          final sinAprobar = !prov.m_desbloqueada(u);
           final bloqueada = sinPlan || sinAprobar;
           return TarjetaUnidad(
             unidad: u,
@@ -162,8 +156,7 @@ class _UnidadesScreenState extends State<UnidadesScreen> {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(
-                      'Aprueba la evaluación final de la Unidad ${anterior?.orden ?? u.orden - 1} '
-                      '(70 % o más) para desbloquear esta unidad.',
+                      'Unidad bloqueada: aprueba la evaluacion de la unidad ${anterior?.orden ?? u.orden - 1}',
                     ),
                     duration: const Duration(seconds: 4),
                   ),
@@ -171,13 +164,12 @@ class _UnidadesScreenState extends State<UnidadesScreen> {
               } else if (sinPlan) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
-                    content: Text('Unidad premium: elige un plan para desbloquearla'),
+                    content: Text('Unidad premium: necesitas un plan'),
                     duration: Duration(seconds: 3),
                   ),
                 );
                 context.read<NavProvider>().m_cambia(2);
               } else {
-                SonidosService.m_portada();
                 Navigator.pushNamed(context, '/unidad', arguments: u.id);
               }
             },
@@ -194,7 +186,7 @@ class _UnidadesScreenState extends State<UnidadesScreen> {
               mainAxisSpacing: 16,
             ),
             itemCount: filtradas.length,
-            itemBuilder: (context, i) => Aparece(indice: i, child: tarjeta(i)),
+            itemBuilder: (context, i) => tarjeta(i),
           );
         }
 
@@ -203,10 +195,7 @@ class _UnidadesScreenState extends State<UnidadesScreen> {
           itemCount: filtradas.length,
           itemBuilder: (context, i) => Padding(
             padding: const EdgeInsets.only(bottom: 14),
-            child: Aparece(
-              indice: i,
-              child: SizedBox(height: 74, child: tarjeta(i)),
-            ),
+            child: SizedBox(height: 74, child: tarjeta(i)),
           ),
         );
       },

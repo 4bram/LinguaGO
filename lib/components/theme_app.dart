@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-/// Temas de la aplicación (claro / oscuro) con la paleta del diseño:
-/// morado intenso + lila, tipografía Raleway.
 class ThemeApp {
   static const Color morado = Color(0xFF4A1FE8);
   static const Color moradoClaro = Color(0xFF6B3DF5);

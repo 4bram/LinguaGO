@@ -8,21 +8,33 @@ import 'package:lingua_go/firebase_options.dart';
 import 'package:lingua_go/models/notificacion_model.dart';
 import 'package:lingua_go/providers/notificaciones_provider.dart';
 
-/// Handler para mensajes con la app en SEGUNDO PLANO o CERRADA.
-/// Debe ser una función de nivel superior. Si el mensaje trae "notification"
-/// (consola de Firebase), el sistema operativo la muestra solo.
 @pragma('vm:entry-point')
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 }
 
-/// Cloud Messaging administrado desde la consola de Firebase (sin backend).
 class NotificacionesService {
-  /// FCM solo se usa en Android / iOS.
+
   static bool get soportado =>
       !kIsWeb &&
       (defaultTargetPlatform == TargetPlatform.android ||
           defaultTargetPlatform == TargetPlatform.iOS);
+
+  Future<String> m_leePermiso() async {
+    if (!soportado) return 'no disponible en esta plataforma';
+    try {
+      final s = await FirebaseMessaging.instance.getNotificationSettings();
+      return switch (s.authorizationStatus) {
+        AuthorizationStatus.authorized => 'concedido',
+        AuthorizationStatus.provisional => 'provisional',
+        AuthorizationStatus.denied => 'denegado (actívalo en Ajustes del teléfono)',
+        AuthorizationStatus.notDetermined => 'sin decidir',
+        _ => 'denegado (actívalo en Ajustes del teléfono)',
+      };
+    } catch (e) {
+      return 'desconocido';
+    }
+  }
 
   Future<void> m_suscribe(String tema) async {
     if (!soportado) return;
@@ -34,8 +46,6 @@ class NotificacionesService {
     await FirebaseMessaging.instance.unsubscribeFromTopic(tema);
   }
 
-  /// Listener GLOBAL: se registra una sola vez al iniciar la app y por eso
-  /// funciona en todas las pantallas.
   Future<void> m_inicializa({required NotificacionesProvider provider}) async {
     if (!soportado) return;
     final fcm = FirebaseMessaging.instance;
@@ -66,21 +76,18 @@ class NotificacionesService {
       }
     }
 
-    // 1) PRIMER PLANO
     FirebaseMessaging.onMessage.listen((mensaje) {
       final n = _convierte(mensaje, 'Primer plano');
       provider.m_agrega(n);
       _muestraBanner(n);
     });
 
-    // 2) SEGUNDO PLANO (el usuario toca la notificación)
     FirebaseMessaging.onMessageOpenedApp.listen((mensaje) {
       final n = _convierte(mensaje, 'Segundo plano');
       provider.m_agrega(n);
       _muestraDialogo(n);
     });
 
-    // 3) APP CERRADA (se abrió tocando la notificación)
     try {
       final inicial = await fcm.getInitialMessage();
       if (inicial != null) {
@@ -95,6 +102,7 @@ class NotificacionesService {
 
   NotificacionModel _convierte(RemoteMessage m, String estado) {
     return NotificacionModel(
+      id: m.messageId ?? '',
       titulo: m.notification?.title ?? m.data['titulo'] ?? 'Notificación',
       cuerpo: m.notification?.body ?? m.data['cuerpo'] ?? '',
       estado: estado,
@@ -125,7 +133,7 @@ class NotificacionesService {
           ],
         ),
         action: SnackBarAction(
-          label: 'VER',
+          label: 'Ver',
           textColor: Colors.white,
           onPressed: () => _muestraDialogo(n),
         ),
@@ -140,7 +148,7 @@ class NotificacionesService {
       context: contexto,
       builder: (c) => AlertDialog(
         title: Text(n.titulo),
-        content: Text('${n.cuerpo}\n\nRecibida con la app en: ${n.estado}'),
+        content: Text('${n.cuerpo}\n\nApp en: ${n.estado}'),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(c).pop(),

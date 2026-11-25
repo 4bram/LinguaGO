@@ -3,13 +3,11 @@ import 'package:lingua_go/components/anillo_progreso.dart';
 import 'package:lingua_go/components/etiqueta.dart';
 import 'package:lingua_go/models/unidad_model.dart';
 
-/// Tarjeta de unidad: degradado, sombra de color, círculo decorativo
-/// y anillo de progreso (o candado si es premium bloqueada).
 class TarjetaUnidad extends StatelessWidget {
   final UnidadModel unidad;
   final int porcentaje;
   final bool bloqueada;
-  /// Muestra la etiqueta PREMIUM (se oculta cuando el usuario ya tiene un plan activo).
+
   final bool mostrarPremium;
   final Color color;
   final VoidCallback onTap;
@@ -74,7 +72,7 @@ class TarjetaUnidad extends StatelessWidget {
                               children: [
                                 Flexible(
                                   child: Text(
-                                    'UNIDAD ${unidad.orden}',
+                                    'Unidad ${unidad.orden}',
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: const TextStyle(
@@ -86,7 +84,7 @@ class TarjetaUnidad extends StatelessWidget {
                                 ),
                                 if (unidad.premium && mostrarPremium) ...[
                                   const SizedBox(width: 8),
-                                  const Etiqueta('PREMIUM', icono: Icons.star),
+                                  const Etiqueta('Premium', icono: Icons.star),
                                 ],
                               ],
                             ),

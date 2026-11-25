@@ -1,9 +1,8 @@
-/// Plan de suscripción (modelo de prestación de servicios).
 class PlanModel {
   final String id;
   final String nombre;
   final String descripcion;
-  final int precio; // MXN
+  final int precio;
   final int meses;
   final List<String> beneficios;
   final bool destacado;
@@ -18,7 +17,6 @@ class PlanModel {
     this.destacado = false,
   });
 
-  /// Tres modalidades distintas (requisito del proyecto).
   static const List<PlanModel> planes = [
     PlanModel(
       id: 'mensual',

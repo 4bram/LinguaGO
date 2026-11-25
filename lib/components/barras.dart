@@ -1,47 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lingua_go/components/theme_app.dart';
 
-/// Barra de carga de la pantalla de inicio (degradado + brillo).
-/// Inspirada en la barra de la app de referencia, con widgets básicos.
-class BarraCarga extends StatelessWidget {
-  final double valor;
-  final double ancho;
-
-  const BarraCarga({super.key, required this.valor, this.ancho = 220});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: ancho,
-      height: 8,
-      decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.2),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      alignment: Alignment.centerLeft,
-      child: FractionallySizedBox(
-        widthFactor: valor.clamp(0.0, 1.0).toDouble(),
-        child: Container(
-          decoration: BoxDecoration(
-            gradient: const LinearGradient(
-              colors: [Colors.white, ThemeApp.lila],
-            ),
-            borderRadius: BorderRadius.circular(8),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.white.withValues(alpha: 0.6),
-                blurRadius: 10,
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-/// Barra de progreso con degradado que se llena con animación
-/// (capítulos, tarjetas de vocabulario, medidor del sensor).
 class BarraProgreso extends StatelessWidget {
   final double valor;
   final double alto;
@@ -82,11 +41,10 @@ class BarraProgreso extends StatelessWidget {
   }
 }
 
-/// Indicador de "cargando" para listas: barra animada + texto.
 class CargandoBarra extends StatelessWidget {
   final String texto;
 
-  const CargandoBarra({super.key, this.texto = 'Cargando…'});
+  const CargandoBarra({super.key, this.texto = 'Cargando...'});
 
   @override
   Widget build(BuildContext context) {

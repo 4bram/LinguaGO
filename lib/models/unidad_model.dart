@@ -1,5 +1,3 @@
-/// Unidad de aprendizaje. El catálogo base se sincroniza con Firestore
-/// al iniciar sesión para mantener el contenido compartido entre usuarios.
 class UnidadModel {
   final String id;
   final int orden;
@@ -43,7 +41,7 @@ class UnidadModel {
       'capitulos': capitulos,
       'vocabulario': vocabulario,
     };
-    // No borrar una imagen personalizada que ya exista en Firestore.
+
     if (imagenUrl.isNotEmpty) mapa['imagenUrl'] = imagenUrl;
     return mapa;
   }
@@ -65,7 +63,7 @@ class UnidadModel {
       );
     }
 
-    return [
+    final base = [
       crear(1, 'Introducción', ['Saludos y despedidas', 'El abecedario', 'Números y edad', 'Presentarse', 'Países y nacionalidades', 'Frases de cortesía'],
         'Hello|Hola;Hi|Hola;Good morning|Buenos días;Good afternoon|Buenas tardes;Good evening|Buenas noches;Goodbye|Adiós;See you later|Hasta luego;Please|Por favor;Thank you|Gracias;You are welcome|De nada;Excuse me|Disculpe;Sorry|Lo siento;Name|Nombre;Surname|Apellido;Nice to meet you|Mucho gusto;How are you?|¿Cómo estás?;I am fine|Estoy bien'),
       crear(2, 'Trabajo y escuela', ['Materias escolares', 'Útiles y materiales', 'Profesiones', 'Lugares de trabajo', 'Rutina de estudio', 'Entrevistas'],
@@ -96,16 +94,8 @@ class UnidadModel {
         'Happy|Feliz;Sad|Triste;Angry|Enojado;Worried|Preocupado;Excited|Emocionado;Nervous|Nervioso;Surprised|Sorprendido;Bored|Aburrido;Relaxed|Relajado;Proud|Orgulloso;Afraid|Asustado;Confident|Seguro;I think|Pienso que;I believe|Creo que;In my opinion|En mi opinión;I agree|Estoy de acuerdo;I disagree|No estoy de acuerdo;Maybe|Quizá;Probably|Probablemente;It depends|Depende'),
       crear(15, 'Gramática esencial', ['Presente simple', 'Presente continuo', 'Pasado simple', 'Futuro con going to', 'Artículos y plurales', 'Pronombres y posesivos'],
         'Usually|Usualmente;Right now|Ahora mismo;Yesterday|Ayer;Last week|La semana pasada;Tomorrow|Mañana;Next month|El próximo mes;Already|Ya;Yet|Todavía;Before|Antes;After|Después;Every day|Todos los días;At the moment|En este momento;Was|Era/estaba;Were|Eran/estaban;Did|Auxiliar pasado;Does|Auxiliar tercera persona;Do|Auxiliar presente;Will|Futuro;Going to|Ir a;Their|De ellos;Our|Nuestro;Mine|Mío'),
-      crear(16, 'Inglés para el trabajo', ['Comunicación profesional', 'Correos electrónicos', 'Reuniones', 'Proyectos y tareas', 'Atención al cliente', 'Negociación básica'],
-        'Deadline|Fecha límite;Schedule|Horario;Task|Tarea;Project|Proyecto;Team|Equipo;Colleague|Colega;Manager|Gerente;Client|Cliente;Customer|Consumidor;Feedback|Comentarios;Report|Informe;Invoice|Factura;Email|Correo;Attachment|Archivo adjunto;Forward|Reenviar;Reply|Responder;Available|Disponible;Busy|Ocupado;Meeting room|Sala de juntas;Could you...?|¿Podrías...?;Please find attached|Adjunto encontrarás', premium: true),
-      crear(17, 'Conversación intermedia', ['Small talk', 'Contar anécdotas', 'Hacer sugerencias', 'Resolver malentendidos', 'Expresiones naturales', 'Conversación telefónica'],
-        'Actually|En realidad;By the way|Por cierto;I mean|Quiero decir;Sounds good|Suena bien;No worries|No te preocupes;That makes sense|Tiene sentido;What do you mean?|¿Qué quieres decir?;Let me think|Déjame pensar;As far as I know|Hasta donde sé;To be honest|Para ser sincero;It turns out|Resulta que;Long time no see|Tanto tiempo;How come?|¿Cómo es que?;Never mind|No importa;Hang on|Espera;I see|Ya veo;Fair enough|Está bien;Definitely|Definitivamente', premium: true),
-      crear(18, 'Situaciones cotidianas', ['En una cafetería', 'En el banco', 'En una farmacia', 'Pedir ayuda', 'Quejas y soluciones', 'Emergencias básicas'],
-        'Could I have...?|¿Me podría dar...?;I would like|Quisiera;For here|Para comer aquí;To go|Para llevar;Account|Cuenta bancaria;Cash machine|Cajero automático;Withdraw|Retirar;Deposit|Depositar;Prescription|Receta médica;Dosage|Dosis;Allergic|Alérgico;Help me|Ayúdeme;I need assistance|Necesito ayuda;It is broken|Está descompuesto;There is a problem|Hay un problema;I would like a refund|Quisiera un reembolso;Emergency|Emergencia;Fire department|Bomberos;Police station|Comisaría', premium: true),
-      crear(19, 'Inglés avanzado práctico', ['Phrasal verbs frecuentes', 'Conectores', 'Expresiones idiomáticas', 'Matices y precisión', 'Argumentar ideas', 'Comprensión avanzada'],
-        'Find out|Averiguar;Give up|Rendirse;Look after|Cuidar;Carry on|Continuar;Put off|Posponer;Run out of|Quedarse sin;Although|Aunque;However|Sin embargo;Therefore|Por lo tanto;Moreover|Además;Unless|A menos que;Despite|A pesar de;On the other hand|Por otro lado;Take into account|Tomar en cuenta;As a result|Como resultado;In the long run|A largo plazo;To some extent|Hasta cierto punto;It goes without saying|No hace falta decirlo', premium: true),
-      crear(20, 'Números, fechas y medidas', ['Números cardinales', 'Números ordinales', 'Fechas y cumpleaños', 'Horas y duración', 'Medidas y cantidades', 'Hacer cálculos cotidianos'],
-        'Zero|Cero;One|Uno;Two|Dos;Three|Tres;Four|Cuatro;Five|Cinco;Ten|Diez;Twenty|Veinte;Thirty|Treinta;Forty|Cuarenta;Fifty|Cincuenta;One hundred|Cien;One thousand|Mil;First|Primero;Second|Segundo;Third|Tercero;Fourth|Cuarto;Birthday|Cumpleaños;Date|Fecha;Year|Año;Month|Mes;Week|Semana;Hour|Hora;Minute|Minuto;Second|Segundo;Half|Mitad;Quarter|Cuarto;Kilometer|Kilómetro;Meter|Metro;Liter|Litro;Kilo|Kilo;How many?|¿Cuántos?;How much?|¿Cuánto?', premium: false),
     ];
+
+    return base;
   }
 }

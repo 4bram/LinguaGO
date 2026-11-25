@@ -1,39 +1,21 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:lingua_go/components/aparece.dart';
 import 'package:lingua_go/components/anillo_progreso.dart';
 import 'package:lingua_go/components/barras.dart';
 import 'package:lingua_go/components/encabezado_curvo.dart';
 import 'package:lingua_go/components/responsive.dart';
 import 'package:lingua_go/components/theme_app.dart';
-import 'package:lingua_go/providers/sesion_provider.dart';
 import 'package:lingua_go/providers/unidades_provider.dart';
 import 'package:lingua_go/models/contenido_capitulos.dart';
 import 'package:lingua_go/models/unidad_model.dart';
 import 'package:provider/provider.dart';
 
-/// Detalle de la unidad (diseño de referencia, pantalla 3):
-/// capítulos con avance y "Ejercicios generales".
 class UnidadDetalleScreen extends StatelessWidget {
   const UnidadDetalleScreen({super.key});
-
-  Future<void> _cambiarImagen(BuildContext context, String id) async {
-    final error = await context.read<UnidadesProvider>().m_cambiaImagen(id);
-    if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(error ?? 'Imagen actualizada'),
-          duration: const Duration(seconds: 3),
-        ),
-      );
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
     final id = ModalRoute.of(context)!.settings.arguments as String;
     final prov = context.watch<UnidadesProvider>();
-    final esAdmin = context.watch<SesionProvider>().esAdmin;
     final unidad = prov.m_porId(id);
 
     if (unidad == null) {
@@ -68,13 +50,6 @@ class UnidadDetalleScreen extends StatelessWidget {
                             onPressed: () => Navigator.pop(context),
                             icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white),
                           ),
-                          // Solo administradores (colección "admins").
-                          if (esAdmin)
-                            IconButton(
-                              tooltip: 'Cambiar imagen de la unidad',
-                              onPressed: () => _cambiarImagen(context, unidad.id),
-                              icon: const Icon(Icons.add_a_photo, color: Colors.white),
-                            ),
                         ],
                       ),
                       const Spacer(),
@@ -87,7 +62,7 @@ class UnidadDetalleScreen extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'UNIDAD ${unidad.orden}',
+                                    'Unidad ${unidad.orden}',
                                     style: const TextStyle(
                                       color: Colors.white,
                                       fontSize: 26,
@@ -95,7 +70,7 @@ class UnidadDetalleScreen extends StatelessWidget {
                                     ),
                                   ),
                                   Text(
-                                    unidad.nombre.toUpperCase(),
+                                    unidad.nombre,
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
                                     style: const TextStyle(color: Colors.white70),
@@ -117,18 +92,15 @@ class UnidadDetalleScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(24),
                 children: [
                   for (int i = 0; i < unidad.capitulos.length; i++)
-                    Aparece(
-                      indice: i,
-                      child: _cajaCapitulo(
-                        context,
-                        _tarjetaCapitulo(context, prov, unidad.id, i, unidad, progreso[i]),
-                      ),
+                    _cajaCapitulo(
+                      context,
+                      _tarjetaCapitulo(context, prov, unidad.id, i, unidad, progreso[i]),
                     ),
                   const SizedBox(height: 8),
                   _seccionFinal(context, prov, unidad),
                   const SizedBox(height: 24),
                   const Text(
-                    'Práctica libre (no cuenta para el avance)',
+                    'Practica libre',
                     style: TextStyle(
                       color: ThemeApp.moradoClaro,
                       fontWeight: FontWeight.bold,
@@ -156,7 +128,7 @@ class UnidadDetalleScreen extends StatelessWidget {
                         ),
                         const SizedBox(width: 12),
                         _tarjetaEjercicio(
-                          'Gramática',
+                          'Gramatica',
                           Icons.menu_book,
                           ThemeApp.morado,
                           () => _abrirPractica(context, unidad.id, 'gramatica'),
@@ -272,7 +244,7 @@ class UnidadDetalleScreen extends StatelessWidget {
               )).toList(),
             )
           else
-            const Align(alignment: Alignment.centerLeft, child: Text('Incluye ejemplos guiados y práctica contextual.', style: TextStyle(fontSize: 11))),
+            const SizedBox.shrink(),
           const SizedBox(height: 10),
           Align(
             alignment: Alignment.centerLeft,
@@ -286,7 +258,7 @@ class UnidadDetalleScreen extends StatelessWidget {
           Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              'Para completar el capítulo: termina todo el material y aprueba la evaluación con 70 % o más.',
+              'Necesitas 70 % en la evaluacion para completar el capitulo.',
               style: TextStyle(fontSize: 10, color: Theme.of(context).colorScheme.onSurfaceVariant),
             ),
           ),
@@ -296,15 +268,15 @@ class UnidadDetalleScreen extends StatelessWidget {
             runSpacing: 8,
             children: [
               _botonTarjetas(context, unidadId, indice, hechas.contains('tarjetas')),
-              _botonCapitulo(context, unidadId, indice, 'Lección', Icons.menu_book, 'leccion',
+              _botonCapitulo(context, unidadId, indice, 'Leccion', Icons.menu_book, 'leccion',
                   hecho: hechas.contains('leccion')),
               _botonCapitulo(context, unidadId, indice, 'Escucha', Icons.headphones, 'escucha',
                   hecho: hechas.contains('escucha')),
-              _botonCapitulo(context, unidadId, indice, 'Gramática', Icons.spellcheck, 'gramatica',
+              _botonCapitulo(context, unidadId, indice, 'Gramatica', Icons.spellcheck, 'gramatica',
                   hecho: hechas.contains('gramatica')),
               _botonCapitulo(context, unidadId, indice, 'Escritura', Icons.edit, 'escritura',
                   hecho: hechas.contains('escritura')),
-              _botonCapitulo(context, unidadId, indice, 'Evaluación', Icons.quiz, 'evaluacion',
+              _botonCapitulo(context, unidadId, indice, 'Evaluacion', Icons.quiz, 'evaluacion',
                   hecho: hechas.contains('evaluacion'), bloqueado: !materialListo),
             ],
           ),
@@ -312,7 +284,6 @@ class UnidadDetalleScreen extends StatelessWidget {
       ),
     );
   }
-
 
   Widget _botonTarjetas(BuildContext context, String unidadId, int indice, bool hecho) {
     return OutlinedButton.icon(
@@ -343,7 +314,7 @@ class UnidadDetalleScreen extends StatelessWidget {
       onPressed: bloqueado
           ? () => ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
-                  content: Text('Primero termina la lección, tarjetas, escucha, gramática y escritura de este capítulo.'),
+                  content: Text('Primero termina las actividades del capitulo'),
                   duration: Duration(seconds: 3),
                 ),
               )
@@ -357,12 +328,10 @@ class UnidadDetalleScreen extends StatelessWidget {
     );
   }
 
-  /// Evaluación final de la unidad: se abre con todos los capítulos al 100 %.
   Widget _seccionFinal(BuildContext context, UnidadesProvider prov, UnidadModel unidad) {
     final abierta = prov.m_capitulosCompletos(unidad);
     final eval = prov.m_evalUnidad(unidad);
     final aprobada = prov.m_unidadAprobada(unidad);
-    final certUrl = '${eval?['certificadoUrl'] ?? ''}';
     final color = aprobada ? Colors.green : ThemeApp.morado;
 
     final String estado;
@@ -371,9 +340,9 @@ class UnidadDetalleScreen extends StatelessWidget {
     } else if (eval != null) {
       estado = 'Sin aprobar · último ${eval['ultimo']} % · ${eval['intentos']} intento(s). Necesitas 70 %.';
     } else if (abierta) {
-      estado = 'Disponible: apruébala con 70 % o más para desbloquear la siguiente unidad.';
+      estado = 'Disponible: necesitas 70 % para pasar a la siguiente unidad.';
     } else {
-      estado = 'Bloqueada: completa todos los capítulos (material + evaluación) para abrirla.';
+      estado = 'Bloqueada';
     }
 
     return Container(
@@ -392,7 +361,7 @@ class UnidadDetalleScreen extends StatelessWidget {
               const SizedBox(width: 8),
               const Expanded(
                 child: Text(
-                  'Evaluación final de la unidad',
+                  'Evaluacion final de la unidad',
                   style: TextStyle(fontWeight: FontWeight.w800, fontSize: 15),
                 ),
               ),
@@ -413,68 +382,16 @@ class UnidadDetalleScreen extends StatelessWidget {
                     ? () => _abrirPractica(context, unidad.id, 'evaluacion_unidad')
                     : () => ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
-                            content: Text('Completa todos los capítulos de la unidad para abrir la evaluación final.'),
+                            content: Text('Termina todos los capitulos primero'),
                             duration: Duration(seconds: 3),
                           ),
                         ),
                 icon: Icon(abierta ? Icons.play_arrow : Icons.lock, size: 18),
-                label: Text(aprobada ? 'Repetir evaluación' : 'Presentar evaluación'),
+                label: Text(aprobada ? 'Repetir evaluacion' : 'Presentar evaluacion'),
               ),
-              if (certUrl.isNotEmpty)
-                OutlinedButton.icon(
-                  onPressed: () => verCertificado(context, certUrl, 'Certificado · Unidad ${unidad.orden}'),
-                  icon: const Icon(Icons.card_membership, size: 18),
-                  label: const Text('Ver certificado'),
-                ),
             ],
           ),
         ],
-      ),
-    );
-  }
-
-  /// Muestra el certificado (imagen de Supabase Storage, con caché local).
-  static void verCertificado(BuildContext context, String url, String titulo) {
-    showDialog(
-      context: context,
-      builder: (c) => Dialog(
-        insetPadding: const EdgeInsets.all(12),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 12, 8, 0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Text(titulo, style: const TextStyle(fontWeight: FontWeight.bold)),
-                  ),
-                  IconButton(
-                    onPressed: () => Navigator.of(c).pop(),
-                    icon: const Icon(Icons.close),
-                  ),
-                ],
-              ),
-            ),
-            Flexible(
-              child: InteractiveViewer(
-                child: CachedNetworkImage(
-                  imageUrl: url,
-                  fit: BoxFit.contain,
-                  placeholder: (_, __) => const Padding(
-                    padding: EdgeInsets.all(40),
-                    child: CircularProgressIndicator(),
-                  ),
-                  errorWidget: (_, __, ___) => const Padding(
-                    padding: EdgeInsets.all(30),
-                    child: Text('No se pudo cargar el certificado.'),
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 10),
-          ],
-        ),
       ),
     );
   }

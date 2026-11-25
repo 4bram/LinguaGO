@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lingua_go/components/botones_campos.dart';
-import 'package:lingua_go/components/encabezado_curvo.dart';
-import 'package:lingua_go/components/tarjeta_formulario.dart';
+import 'package:lingua_go/components/pantalla_auth.dart';
 import 'package:lingua_go/components/validadores.dart';
 import 'package:lingua_go/providers/sesion_provider.dart';
 import 'package:provider/provider.dart';
@@ -53,122 +51,69 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     final cargando = context.watch<SesionProvider>().cargando;
 
-    return Scaffold(
-      body: SingleChildScrollView(
+    return PantallaAuth(
+      child: Form(
+        key: _form,
         child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            EncabezadoCurvo(
-              alto: 270,
-              child: SafeArea(
-                child: Center(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(28),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withValues(alpha: 0.3),
-                              blurRadius: 18,
-                              offset: const Offset(0, 8),
-                            ),
-                          ],
-                        ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(28),
-                          child: Image.asset('assets/icon/logo.png', height: 110),
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      const Text(
-                        'Aprende inglés fácil y rápido',
-                        style: TextStyle(color: Colors.white70),
-                      ),
-                    ],
-                  ),
-                ),
+            const TituloAuth('Iniciar sesion'),
+            const SizedBox(height: 28),
+            CampoAuth(
+              controller: conUser,
+              hint: 'tucorreo@gmail.com',
+              icono: Icons.mail_outline,
+              teclado: TextInputType.emailAddress,
+              validator: Validadores.correo,
+            ),
+            const SizedBox(height: 12),
+            CampoAuth(
+              controller: conPwd,
+              hint: 'Contrasena',
+              icono: Icons.lock_outline,
+              esPassword: true,
+              validator: Validadores.password,
+            ),
+            Align(
+              alignment: Alignment.centerRight,
+              child: EnlaceAuth(
+                accion: 'Olvidaste tu contrasena?',
+                onTap: () => Navigator.pushNamed(context, '/recuperar'),
               ),
             ),
-            TarjetaFormulario(
-              child: Padding(
-                padding: EdgeInsets.zero,
-                child: Form(
-                  key: _form,
-                  child: Column(
-                    children: [
-                      TextFormField(
-                        controller: conUser,
-                        keyboardType: TextInputType.emailAddress,
-                        validator: Validadores.correo,
-                        decoration: decoracionCampo('Correo', Icons.email),
-                      ),
-                      const SizedBox(height: 14),
-                      TextFormField(
-                        controller: conPwd,
-                        obscureText: true,
-                        validator: Validadores.password,
-                        decoration: decoracionCampo('Contraseña', Icons.lock),
-                      ),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: TextButton(
-                          onPressed: () => Navigator.pushNamed(context, '/recuperar'),
-                          child: const Text('¿Olvidaste tu contraseña?'),
-                        ),
-                      ),
-                      BotonPrincipal(
-                        texto: 'INICIAR SESIÓN',
-                        icono: Icons.login,
-                        cargando: cargando,
-                        onPressed: _login,
-                      ),
-                      const SizedBox(height: 16),
-                      const Row(
-                        children: [
-                          Expanded(child: Divider()),
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 8),
-                            child: Text('o continúa con'),
-                          ),
-                          Expanded(child: Divider()),
-                        ],
-                      ),
-                      const SizedBox(height: 16),
-                      OutlinedButton.icon(
-                        onPressed: cargando ? null : _google,
-                        style: OutlinedButton.styleFrom(
-                          minimumSize: const Size.fromHeight(48),
-                          shape: const StadiumBorder(),
-                        ),
-                        icon: const Icon(Icons.g_mobiledata, size: 30),
-                        label: const Text('Google'),
-                      ),
-                      const SizedBox(height: 10),
-                      OutlinedButton.icon(
-                        onPressed: cargando ? null : _github,
-                        style: OutlinedButton.styleFrom(
-                          minimumSize: const Size.fromHeight(48),
-                          shape: const StadiumBorder(),
-                        ),
-                        icon: const Icon(Icons.code),
-                        label: const Text('GitHub'),
-                      ),
-                      const SizedBox(height: 14),
-                      InkWell(
-                        onTap: () => Navigator.pushNamed(context, '/signIn'),
-                        child: Text(
-                          'Crear cuenta',
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.primary,
-                            decoration: TextDecoration.underline,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ],
+            const SizedBox(height: 6),
+            BotonAuth(texto: 'Iniciar sesion', cargando: cargando, onPressed: _login),
+            const SizedBox(height: 26),
+            const SeparadorAuth(),
+            const SizedBox(height: 14),
+            const Text('O entra con', style: TextStyle(color: Colors.white70, fontSize: 12)),
+            const SizedBox(height: 10),
+            Row(
+              children: [
+                Expanded(
+                  child: BotonContornoAuth(
+                    texto: 'Google',
+                    icono: const IconoGoogle(),
+                    onPressed: cargando ? null : _google,
                   ),
                 ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: BotonContornoAuth(
+                    texto: 'GitHub',
+                    icono: const Icon(Icons.code, size: 20, color: Colors.white),
+                    onPressed: cargando ? null : _github,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 18),
+            Center(
+              child: EnlaceAuth(
+                texto: 'No tienes cuenta?',
+                accion: 'Registrate',
+                onTap: () => Navigator.pushNamed(context, '/signIn'),
               ),
             ),
           ],

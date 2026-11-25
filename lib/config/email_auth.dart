@@ -1,39 +1,38 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
-/// Traduce los códigos de error de Firebase Auth a mensajes en español.
 String traduceErrorAuth(FirebaseAuthException e) {
   switch (e.code) {
     case 'invalid-credential':
     case 'wrong-password':
     case 'user-not-found':
-      return 'Correo o contraseña incorrectos';
+      return 'Correo o contrasena incorrectos';
     case 'email-already-in-use':
-      return 'Ese correo ya está registrado';
+      return 'Ese correo ya esta registrado';
     case 'weak-password':
-      return 'La contraseña es muy débil (mínimo 6 caracteres)';
+      return 'La contrasena es debil (min 6 caracteres)';
     case 'invalid-email':
-      return 'El correo no es válido';
+      return 'Correo no valido';
     case 'user-disabled':
-      return 'Esta cuenta fue deshabilitada';
+      return 'Cuenta deshabilitada';
     case 'too-many-requests':
-      return 'Demasiados intentos. Espera un momento';
+      return EmailAuth.mensajeDemasiadosIntentos;
     case 'network-request-failed':
-      return 'Sin conexión a internet';
+      return 'Sin internet';
     case 'account-exists-with-different-credential':
-      return 'Ya existe una cuenta con ese correo usando otro método de acceso';
+      return 'Ya existe una cuenta con ese correo (otro metodo)';
     case 'canceled':
     case 'cancelled-popup-request':
     case 'popup-closed-by-user':
     case 'web-context-canceled':
-      return 'Inicio de sesión cancelado';
+      return 'Inicio de sesion cancelado';
     default:
       return 'Error: ${e.message ?? e.code}';
   }
 }
 
-/// Registro / acceso con correo y contraseña.
-/// Todos los métodos regresan null si salió bien, o el mensaje de error.
 class EmailAuth {
+  static const String mensajeDemasiadosIntentos = 'Muchos intentos, espera un poco';
+
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   Future<String?> m_creaUsuario({
@@ -52,7 +51,7 @@ class EmailAuth {
     } on FirebaseAuthException catch (e) {
       return traduceErrorAuth(e);
     } catch (e) {
-      return 'Error inesperado: $e';
+      return 'Error: $e';
     }
   }
 
@@ -66,25 +65,23 @@ class EmailAuth {
     } on FirebaseAuthException catch (e) {
       return traduceErrorAuth(e);
     } catch (e) {
-      return 'Error inesperado: $e';
+      return 'Error: $e';
     }
   }
 
-  /// Reenvía el correo de confirmación de cuenta.
   Future<String?> m_reenviaVerificacion() async {
     try {
       final usuario = _firebaseAuth.currentUser;
-      if (usuario == null) return 'No hay una sesión activa';
+      if (usuario == null) return 'No hay sesion activa';
       await usuario.sendEmailVerification();
       return null;
     } on FirebaseAuthException catch (e) {
       return traduceErrorAuth(e);
     } catch (e) {
-      return 'Error inesperado: $e';
+      return 'Error: $e';
     }
   }
 
-  /// Recuperación de contraseña por correo.
   Future<String?> m_recuperaPassword(String correo) async {
     try {
       await _firebaseAuth.sendPasswordResetEmail(email: correo);
@@ -92,7 +89,7 @@ class EmailAuth {
     } on FirebaseAuthException catch (e) {
       return traduceErrorAuth(e);
     } catch (e) {
-      return 'Error inesperado: $e';
+      return 'Error: $e';
     }
   }
 }

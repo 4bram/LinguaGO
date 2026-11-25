@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:lingua_go/components/botones_campos.dart';
-import 'package:lingua_go/components/encabezado_curvo.dart';
-import 'package:lingua_go/components/tarjeta_formulario.dart';
+import 'package:lingua_go/components/pantalla_auth.dart';
 import 'package:lingua_go/components/validadores.dart';
-import 'package:lingua_go/config/sonidos_service.dart';
 import 'package:lingua_go/providers/sesion_provider.dart';
 import 'package:provider/provider.dart';
 
-/// Flujo de recuperación de contraseña (correo con enlace de restablecimiento).
 class RecuperarPasswordScreen extends StatefulWidget {
   const RecuperarPasswordScreen({super.key});
 
@@ -33,12 +29,11 @@ class _RecuperarPasswordScreenState extends State<RecuperarPasswordScreen> {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(error ?? 'Te enviamos un correo para restablecer tu contraseña'),
+        content: Text(error ?? 'Revisa tu correo para cambiar la contrasena'),
         duration: const Duration(seconds: 4),
       ),
     );
     if (error == null) {
-      SonidosService.m_exito();
       Navigator.pop(context);
     }
   }
@@ -47,72 +42,28 @@ class _RecuperarPasswordScreenState extends State<RecuperarPasswordScreen> {
   Widget build(BuildContext context) {
     final cargando = context.watch<SesionProvider>().cargando;
 
-    return Scaffold(
-      body: SingleChildScrollView(
+    return PantallaAuth(
+      conAtras: true,
+      child: Form(
+        key: _form,
         child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            EncabezadoCurvo(
-              alto: 215,
-              child: SafeArea(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(8, 0, 24, 56),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      IconButton(
-                        onPressed: () => Navigator.pop(context),
-                        icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white),
-                      ),
-                      const Spacer(),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 16),
-                        child: FittedBox(
-                          fit: BoxFit.scaleDown,
-                          child: Text(
-                            'RECUPERAR CONTRASEÑA',
-                            maxLines: 1,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 22,
-                              fontWeight: FontWeight.w800,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+            const TituloAuth(
+              'Recuperar contrasena',
+              detalle: 'Escribe tu correo y te mandamos un enlace',
             ),
-            TarjetaFormulario(
-              child: Padding(
-                padding: EdgeInsets.zero,
-                child: Form(
-                  key: _form,
-                  child: Column(
-                    children: [
-                      const Text(
-                        'Escribe el correo de tu cuenta y te enviaremos un enlace para crear una nueva contraseña.',
-                      ),
-                      const SizedBox(height: 20),
-                      TextFormField(
-                        controller: conUser,
-                        keyboardType: TextInputType.emailAddress,
-                        validator: Validadores.correo,
-                        decoration: decoracionCampo('Correo', Icons.email),
-                      ),
-                      const SizedBox(height: 22),
-                      BotonPrincipal(
-                        texto: 'ENVIAR ENLACE',
-                        icono: Icons.send,
-                        cargando: cargando,
-                        onPressed: _enviar,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+            const SizedBox(height: 28),
+            CampoAuth(
+              controller: conUser,
+              hint: 'tucorreo@gmail.com',
+              icono: Icons.mail_outline,
+              teclado: TextInputType.emailAddress,
+              validator: Validadores.correo,
             ),
+            const SizedBox(height: 18),
+            BotonAuth(texto: 'Enviar enlace', cargando: cargando, onPressed: _enviar),
           ],
         ),
       ),

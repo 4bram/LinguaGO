@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-/// Elemento de contenido de un producto (palabra, frase, regla...).
 class ItemContenido {
   final String en;
   final String es;
@@ -15,18 +14,17 @@ class SeccionContenido {
   const SeccionContenido(this.titulo, this.items);
 }
 
-/// Producto de la tienda (modelo de venta de productos) con su contenido entregable.
 class ProductoModel {
   final String id;
   final String nombre;
   final String descripcion;
-  final int precio; // MXN
+  final int precio;
   final String categoria;
   final IconData icono;
-  /// true: el contenido se estudia como tarjetas que se voltean.
+
   final bool modoTarjeta;
   final List<SeccionContenido> secciones;
-  /// Formatos descargables (extensiones) que se guardan en el bucket `recursos`.
+
   final List<String> archivos;
 
   const ProductoModel({
@@ -43,13 +41,10 @@ class ProductoModel {
 
   int get totalItems => secciones.fold(0, (s, x) => s + x.items.length);
 
-  /// Ruta de un archivo descargable en el bucket `recursos` de Supabase.
   String m_rutaArchivo(String ext) => 'archivos/$id.$ext';
 
-  /// Etiqueta de formatos, p. ej. PDF + XLSX.
   String get formatos => archivos.map((e) => e.toUpperCase()).join(' + ');
 
-  /// Ruta de la portada en el bucket `recursos` de Supabase.
   String get rutaPortada => 'portadas/$id.png';
 
   static const List<ProductoModel> catalogo = [

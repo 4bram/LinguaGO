@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-/// Etiqueta pequeña tipo "píldora" (PREMIUM, ACTIVO...).
 class Etiqueta extends StatelessWidget {
   final String texto;
   final Color fondo;
